@@ -1,7 +1,7 @@
 ﻿//基本テーブル
 table_company_departments：部署
 table_company_classes：社内階級
-table_employees：社員個人情報
+table_employees_privacy：社員個人情報
 table_dispatch_places：派遣先
 table_
 table_authority：「勤怠管理システム」の権限
