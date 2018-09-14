@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <!--<link rel='stylesheet' href='/stylesheets/style.css' />-->
+    <!-- jQuery読み込み -->
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+    <script src='/javascripts/bootstrap.min.js'></script>
+    <script src='/javascripts/bootstrap.js'></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/login" name="login_form" method="POST">
+		<table>
+			<tr>
+				<td>
+					<div>ID :</div>
+				</td>
+				<td>
+					<div>
+						<input type="text" name="username" />
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<div>Password :</div>
+				</td>
+				<td>
+					<div>
+						<input type="password" name="password" />
+					</div>
+				</td>
+			</tr>
+		</table>
+		<input name="submit" class="btn" type="submit" value="login"  />
+    </form>
+    <h2><%= login_result%></h2>
+  </body>
+</html>

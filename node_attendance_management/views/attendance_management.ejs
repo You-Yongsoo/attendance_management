@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>勤怠管理ページ</title>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- BootstrapのCSS読み込み -->
+<link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script src='/javascripts/bootstrap.min.js'></script>
+<script src='/javascripts/bootstrap.js'></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
+
+</head>
+<body>
+
+	<h1>勤怠管理</h1>
+	<h2>ユーザ情報</h2>
+	<div class="container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>氏名</th>
+					<th>メールアカウント</th>
+					<th>部署</th>
+					<th>職級</th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr>
+					<td>劉 勇綬</td>
+					<td>ys-yoo@softwiz.jp</td>
+					<td>開発本部 システム事業部2</td>
+					<td>課長代理</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- <div class="container-fluid bg-info">container-fluid</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-2 bg-info">col-xs-2</div>
+			<div class="col-xs-6 bg-success">col-xs-6</div>
+			<div class="col-xs-2 bg-warning">col-xs-2</div>
+			<div class="col-xs-2 bg-danger">col-xs-2</div>
+		</div>
+	</div> -->
+
+
+	<h2>勤怠状況</h2>
+	<div class="container">
+		<p class="text-right">
+		<input type="button" class="btn" value="サンプルボタン1" />
+		<input type="button" class="btn" value="サンプルボタン2" />
+		<input type="button" class="btn" value="サンプルボタン3" />
+		</p>
+		<h2 class="text-center">
+			年
+			月
+		</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="text-center">日</th>
+					<th class="text-center">曜日</th>
+					<th class="text-center">休日</th>
+					<th class="text-center">開始時刻</th>
+					<th class="text-center">終了時刻</th>
+					<th class="text-center">時刻自動入力</th>					
+					<th class="text-center">稼動時間</th>
+					<th class="text-center">休憩時間</th>
+					<th class="text-center">出社状況</th>
+					<th class="text-center">コメント</th>
+
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td class="text-center">日</td>
+					<td
+						class="text-center"></td>
+					<td class="text-center">
+						
+					</td>
+					<td id="start_time" class="text-center"><input type="number" id="start_time_hour" min="00" max="24"
+						style="width: 40px;" />:<input type="number" id="start_time_minute" min="00" max="59"
+						style="width: 40px;" /></td>
+					<td id="end_time" class="text-center"><input type="number" id="end_time_hour" min="00" max="24"
+						style="width: 40px;" />:<input type="number" id="end_time_minute" min="00" max="59"
+						style="width: 40px;" /></td>
+					<td id="working_time" class="text-center"><input type="button" class="btn" value="入力" /></td>
+					<td id="working_time" class="text-center">07:75</td>
+					<td id="break_time" class="text-center">01:00</td>
+					<td id="working_state" class="text-center"><select name=”state”>
+							<option value=”seizyou”>正常出勤</option>
+							<option value=”izyou”>休み</option>
+							<option value="chikoku">遅刻</option>
+							<option value="soutai">早退</option>
+							
+					</select></td>
+					<td class="text-center">
+						<input type="text"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
