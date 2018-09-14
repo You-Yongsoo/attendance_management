@@ -1,35 +1,35 @@
-use db_attendance_management
+ï»¿use db_attendance_management
 
-db.departments.insert({department_name:'ŠJ”­–{•” ƒVƒXƒeƒ€–‹Æ•”'});
-db.departments.insert({department_name:'ŠJ”­–{•” ƒVƒXƒeƒ€–‹Æ•”1'});
-db.departments.insert({department_name:'ŠJ”­–{•” ƒVƒXƒeƒ€–‹Æ•”2'});
-db.departments.insert({department_name:'Œo‰cx‰‡•”'});
+db.departments.insert({department_name:'é–‹ç™ºæœ¬éƒ¨ ã‚·ã‚¹ãƒ†ãƒ äº‹æ¥­éƒ¨'});
+db.departments.insert({department_name:'é–‹ç™ºæœ¬éƒ¨ ã‚·ã‚¹ãƒ†ãƒ äº‹æ¥­éƒ¨1'});
+db.departments.insert({department_name:'é–‹ç™ºæœ¬éƒ¨ ã‚·ã‚¹ãƒ†ãƒ äº‹æ¥­éƒ¨2'});
+db.departments.insert({department_name:'çµŒå–¶æ”¯æ´éƒ¨'});
 
-db.company_classes.insert({class_name:'Ğˆõ'});
-db.company_classes.insert({class_name:'‰Û’·‘ã—'});
-db.company_classes.insert({class_name:'‰Û’·'});
-db.company_classes.insert({class_name:'Ÿ’·'});
-db.company_classes.insert({class_name:'•”’·'});
-db.company_classes.insert({class_name:'Ğ’·'});
+db.company_classes.insert({class_name:'ç¤¾å“¡'});
+db.company_classes.insert({class_name:'èª²é•·ä»£ç†'});
+db.company_classes.insert({class_name:'èª²é•·'});
+db.company_classes.insert({class_name:'æ¬¡é•·'});
+db.company_classes.insert({class_name:'éƒ¨é•·'});
+db.company_classes.insert({class_name:'ç¤¾é•·'});
 
-db.dispatch_places.insert({dispatch_place:'©ĞŠJ”­'});
-db.dispatch_places.insert({dispatch_place:'Š”®‰ïĞ ƒtƒH[ƒJƒXƒVƒXƒeƒ€ƒY'});
+db.dispatch_places.insert({dispatch_place:'è‡ªç¤¾é–‹ç™º'});
+db.dispatch_places.insert({dispatch_place:'æ ªå¼ä¼šç¤¾ ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚·ã‚¹ãƒ†ãƒ ã‚º'});
 db.dispatch_places.insert({dispatch_place:'IBM'});
-db.dispatch_places.insert({dispatch_place:'Š”®‰ïĞ “ú—§»ìŠ'});
+db.dispatch_places.insert({dispatch_place:'æ ªå¼ä¼šç¤¾ æ—¥ç«‹è£½ä½œæ‰€'});
 
-db.authorities.insert({authority:'ĞˆõŒ ŒÀ'});
-db.authorities.insert({authority:'ƒ`[ƒ€ƒŠ[ƒ_Œ ŒÀ'});
-db.authorities.insert({authority:'•”’·Œ ŒÀ'});
-db.authorities.insert({authority:'ƒVƒXƒeƒ€ŠÇ—ÒŒ ŒÀ'});
+db.authorities.insert({authority:'ç¤¾å“¡æ¨©é™'});
+db.authorities.insert({authority:'ãƒãƒ¼ãƒ ãƒªãƒ¼ãƒ€æ¨©é™'});
+db.authorities.insert({authority:'éƒ¨é•·æ¨©é™'});
+db.authorities.insert({authority:'ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†è€…æ¨©é™'});
 
-db.employess_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'—« —Eø', birthday:new Date("1988-12-28"), address:'“Œ‹“s‘å“c‹æ“ì”n', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
+db.employess_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'åŠ‰ å‹‡ç¶¬', birthday:new Date("1988-12-28"), address:'æ±äº¬éƒ½å¤§ç”°åŒºå—é¦¬è¾¼', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
 
-db.attendance_states.insert({state:'³íoĞ'});
-db.attendance_states.insert({state:'‘‘Ş'});
-db.attendance_states.insert({state:'Œ‡‹Î'});
-db.attendance_states.insert({state:'ŒŸ‹x‰É'});
-db.attendance_states.insert({state:'”NŸ‹x‰É'});
-db.attendance_states.insert({state:'ŠÔ“àŠO‹Î'});
-db.attendance_states.insert({state:'’x'});
+db.attendance_states.insert({state:'æ­£å¸¸å‡ºç¤¾'});
+db.attendance_states.insert({state:'æ—©é€€'});
+db.attendance_states.insert({state:'æ¬ å‹¤'});
+db.attendance_states.insert({state:'æœˆæ¬¡ä¼‘æš‡'});
+db.attendance_states.insert({state:'å¹´æ¬¡ä¼‘æš‡'});
+db.attendance_states.insert({state:'æ™‚é–“å†…å¤–å‹¤'});
+db.attendance_states.insert({state:'é…åˆ»'});
 
 db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department_id:ObjectId("5b9a16c436f27d5a2590a01b"), class_id:ObjectId("5b7f6c9c285b96dd9569611e"), authority_id:ObjectId("5b7f6c9c285b96dd95696127"), dispatch_id:ObjectId("5b7f6c9c285b96dd95696124")});
