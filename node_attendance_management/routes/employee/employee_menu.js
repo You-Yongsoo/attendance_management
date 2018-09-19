@@ -9,7 +9,6 @@ app.get('/', authenticate.auth, function(req, res) {
   var userAgent = req.headers['user-agent'].toLowerCase();
   console.log('User Agent:'+userAgent);
   console.log(req.user);
-
   
   res.render('./employee_layout/employee_menu');
 });
