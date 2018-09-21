@@ -24,21 +24,15 @@ router.get('/:id', authenticate.auth, function(req, res, next){
     var userAgent = req.headers['user-agent'].toLowerCase();
     var username = req.user.username;
     var id = req.params.id;
+    var employeeInfo, employeePrivacy;
+
+    EmployeeInfo.find({"mail":username}, findEmployeeInfo);
+    EmployeePrivacy.find({"mail":username}, findEmployeePrivacy);
 
     
     console.log("Id:"+id);
     console.log('User Agent:'+userAgent);
-    console.log('UserName:'+req.user.username);    
-    
-
-    EmployeeInfo.find({"mail":username}, function(err, result){
-        console.log('Employee Information:'+result[0]);
-    });
-
-    EmployeePrivacy.find({"mail":username}, function(err, result){
-        console.log('Employee Privacy Info:'+result[0]);
-    });
-
+    console.log('UserName:'+req.user.username);
     
     
     res.render('attendance_management');
@@ -47,5 +41,13 @@ router.get('/:id', authenticate.auth, function(req, res, next){
 function redirectDateToString(str, delim){
     var arr = str.split(delim);
 
+}
+
+function findEmployeeInfo(err, result){
+    console.log('Employee Information:'+result[0]);
+}
+
+function findEmployeePrivacy(err, result){
+    console.log('Employee Privacy Info:'+result[0]);
 }
 module.exports = router;
