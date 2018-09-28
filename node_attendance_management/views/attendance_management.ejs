@@ -12,9 +12,13 @@
 <script src='/javascripts/bootstrap.min.js'></script>
 <script src='/javascripts/bootstrap.js'></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
+<script>
+function initialize(){
 
+}		
+</script>
 </head>
-<body>
+<body onload="initialize()">
 
 	<h1>勤怠管理</h1>
 	<h2>ユーザ情報</h2>
@@ -58,8 +62,8 @@
 		<input type="button" class="btn" value="サンプルボタン3" />
 		</p>
 		<h2 class="text-center">
-			年
-			月
+			<%=year%>年
+			<%=month%>月
 		</h2>
 		<table class="table">
 			<thead>
@@ -79,22 +83,42 @@
 			</thead>
 
 			<tbody>
-				<tr>
-					<td class="text-center">日</td>
-					<td
-						class="text-center"></td>
+				<%
+				var dayLabels = new Array('日', '月', '火', '水', '木', '金', '土');
+				for(var i = 0; i < lastDate; i++){
+					date = new Date(year, month-1, i+1);
+				%>
+				<tr>					
+					<td class="text-center"><%=date.getDate()%>日</td>
 					<td class="text-center">
-						
+						<%if(date.getDay() == 0){%>
+						<p class="text-warning">
+							<%=dayLabels[date.getDay()]%>
+						</p>
+						<%}else if(date.getDay() == 6){%>
+						<p class="text-primary">
+							<%=dayLabels[date.getDay()]%>
+						</p>
+						<%}else{%>
+						<p class="text-secondary">
+							<%=dayLabels[date.getDay()]%>
+						</p>
+						<%}%>
 					</td>
-					<td id="start_time" class="text-center"><input type="number" id="start_time_hour" min="00" max="24"
+					<td class="text-center">
+						<%if(date.getDay() == 0 || date.getDay() == 6){%>
+						○
+						<%}%>
+					</td>
+					<td id="start_time" class="text-center"><input type="number" id="start_time_hour" min="00" max="23"
 						style="width: 40px;" />:<input type="number" id="start_time_minute" min="00" max="59"
 						style="width: 40px;" /></td>
-					<td id="end_time" class="text-center"><input type="number" id="end_time_hour" min="00" max="24"
+					<td id="end_time" class="text-center"><input type="number" id="end_time_hour" min="00" max="23"
 						style="width: 40px;" />:<input type="number" id="end_time_minute" min="00" max="59"
 						style="width: 40px;" /></td>
 					<td id="working_time" class="text-center"><input type="button" class="btn" value="入力" /></td>
-					<td id="working_time" class="text-center">07:75</td>
-					<td id="break_time" class="text-center">01:00</td>
+					<td id="working_time" class="text-center"></td>
+					<td id="break_time" class="text-center"></td>
 					<td id="working_state" class="text-center"><select name=”state”>
 							<option value=”seizyou”>正常出勤</option>
 							<option value=”izyou”>休み</option>
@@ -106,8 +130,10 @@
 						<input type="text"/>
 					</td>
 				</tr>
+				<%}%>
 			</tbody>
 		</table>
 	</div>
 </body>
+
 </html>

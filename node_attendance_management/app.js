@@ -7,9 +7,10 @@ var bodyParser = require('body-parser');
 //var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
+var db_helper = require('./routes/database/db_helper');
 //var passport_azure_ad = require('passport-azure-ad');
 //var bunyan = require('bunyan');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -71,26 +72,26 @@ var app = express();
 
 
 
-//mongoose
-mongoose.connect('mongodb://localhost/db_attendance_management');
+// //mongoose
+// mongoose.connect('mongodb://localhost/db_attendance_management');
 
-mongoose.connection.on('connected', function(){
-  console.log('DB Connected');
-  is_connected_db = true;
-});
+// mongoose.connection.on('connected', function(){
+//   console.log('DB Connected');
+//   is_connected_db = true;
+// });
 
-mongoose.connection.on( 'error', function(err){
-  console.log( 'Failed to connect a mongo db : ' + err );
-});
+// mongoose.connection.on( 'error', function(err){
+//   console.log( 'Failed to connect a mongo db : ' + err );
+// });
 
-// mongoose.disconnect() を実行すると、disconnected => close の順番でコールされる
-mongoose.connection.on( 'disconnected', function(){
-  console.log( 'DB Disconnected.' );
-});
+// // mongoose.disconnect() を実行すると、disconnected => close の順番でコールされる
+// mongoose.connection.on( 'disconnected', function(){
+//   console.log( 'DB Disconnected.' );
+// });
 
-mongoose.connection.on( 'close', function(){
-  console.log( 'DB Connection closed.' );
-});
+// mongoose.connection.on( 'close', function(){
+//   console.log( 'DB Connection closed.' );
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
