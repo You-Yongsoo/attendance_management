@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script>
 function initialize(){
-
+	
 }		
 </script>
 </head>
@@ -35,10 +35,29 @@ function initialize(){
 			</thead>
 			<tbody>
 				<tr>
-					<td>劉 勇綬</td>
-					<td>ys-yoo@softwiz.jp</td>
-					<td>開発本部 システム事業部2</td>
-					<td>課長代理</td>
+					<td><%=employee_privacy.name%></td>
+					<td><%=employee_privacy.mail%></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>住所</th>
+					<th>電話番号</th>
+					<th>誕生日</th>
+					<th>雇用日</th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr>
+					<td><%=employee_privacy.address%></td>
+					<td><%=employee_privacy.phone_number%></td>
+					<td><%=new Date(employee_privacy.birthday)%></td>
+					<td><%=employee_privacy.hiredate%></td>
 				</tr>
 			</tbody>
 		</table>

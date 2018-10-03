@@ -35,3 +35,5 @@ db.attendance_states.insert({state:'遅刻'});
 db.users.insert({username:'ys-yoo@softwiz.jp', password:'3tKV!g24'});
 
 db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department_id:ObjectId("5b9a16c436f27d5a2590a01b"), class_id:ObjectId("5b7f6c9c285b96dd9569611e"), authority_id:ObjectId("5b7f6c9c285b96dd95696127"), dispatch_id:ObjectId("5b7f6c9c285b96dd95696124")});
+
+db.attendances_201810.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2018-10-03"), start_time:new Date(2018,09,03,09,00), end_time:new Date(2018,09,03,17,45), message:"" })

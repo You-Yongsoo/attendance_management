@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var privacy_schema = new Schema({
+var privacySchema = new Schema({
     mail:{type:String, require:true, unique:true},
     name:{type:String, require:true},
     birthday:{type:Date, require:true},
@@ -10,4 +10,4 @@ var privacy_schema = new Schema({
     hiredate:{type:Date, require:true}
 }, {collection:'employees_privacy'});
 
-module.exports = mongoose.model('PrivacyInfo', privacy_schema); 
+module.exports = mongoose.model('EmployeePrivacy', privacySchema); 
