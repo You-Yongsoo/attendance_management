@@ -12,33 +12,35 @@
 		
   </head>
   <body>
-    <h1><%= title %></h1>
-    <form action="/login" name="login_form" method="POST">
-		<table>
-			<tr>
-				<td>
-					<div>ID :</div>
-				</td>
-				<td>
-					<div>
-						<input type="text" name="username" />
-					</div>
-				</td>
-			</tr>
+		<div class="container">
+			<h1><%= title %></h1>
+			<form action="/login" name="login_form" method="POST">
+			<table>
+				<tr>
+					<td>
+						<div>ID :</div>
+					</td>
+					<td>
+						<div>
+							<input type="text" name="username" />
+						</div>
+					</td>
+				</tr>
 
-			<tr>
-				<td>
-					<div>Password :</div>
-				</td>
-				<td>
-					<div>
-						<input type="password" name="password" />
-					</div>
-				</td>
-			</tr>
-		</table>
-		<input name="submit" class="btn" type="submit" value="login"  />
-    </form>
-    <h2><%= login_result%></h2>
+				<tr>
+					<td>
+						<div>Password :</div>
+					</td>
+					<td>
+						<div>
+							<input type="password" name="password" />
+						</div>
+					</td>
+				</tr>
+			</table>
+			<input name="submit" class="btn" type="submit" value="login"  />
+			</form>
+			<h2><%= login_result%></h2>
+		</div>
   </body>
 </html>

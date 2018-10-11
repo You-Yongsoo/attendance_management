@@ -17,6 +17,7 @@
     "ejs-locals": "^1.0.2",
     "express": "~4.15.5",
     "express-session": "^1.15.6",
+    "mongodb": "^3.1.8",
     "mongoose": "^5.2.9",
     "morgan": "~1.9.0",
     "node-calendar": "^0.1.5",

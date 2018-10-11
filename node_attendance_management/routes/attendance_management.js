@@ -8,9 +8,12 @@ var users = require('./database/db_users');
 var User = require('../models/User');
 var EmployeePrivacy = require('../models/EmployeePrivacy');
 var EmployeeInfo = require('../models/EmployeeInfo');
+var Attendances = require('../models/Attendances');
+var db_helper = require('./database/db_helper');
 
 var router = express.Router();
 var calendar = new node_calendar();
+var Schema = mongoose.Schema;
 
 
 router.get('/', authenticate.auth, function(req, res, next) {    
@@ -21,6 +24,7 @@ router.get('/', authenticate.auth, function(req, res, next) {
     var redirect_date = present_year.toString()+'_'+present_month.toString();
     
     res.redirect('/attendance_management/'+redirect_date);
+    
 });
 
 router.get('/:id', authenticate.auth, function(req, res, next){
@@ -40,36 +44,55 @@ router.get('/:id', authenticate.auth, function(req, res, next){
         next(err);
         return;
     }
+    var isFindFinishedInfo = false;
+    var isFindFinishedPrivacy = false;
     
+    // var attendances_model = mongoose.model('Attendances', new Schema({
+    //     mail:{type:String, require:true, unique:true},
+    //     date:{type:Date, require:true},
+    //     start_time:{type:Date, require:true},
+    //     end_time:{type:Date, require:true},
+    //     message:{type:String, require:true}
+    // }, {collection:'attendances_'+present_year.toString()+present_month.toString()}));
 
     var last_date = new Date(present_year, present_month, 0).getDate();    
     
     EmployeeInfo.find({"mail":userName}, function(err, result){
+        isFindFinishedInfo = true;
         console.log("Find EmployeeInfo Result Code:"+err);
         if(result.length > 0){
             employeeInfo = result[0];
             console.log('Employee Information:'+employeeInfo);
         }
-    }).then(function(result){
-        EmployeePrivacy.find({"mail":userName}, function(err, result){
-            console.log("Find EmployeePrivacyInfo Result Code:"+err);  
-            if(result.length > 0){
-                employeePrivacy = result[0];
-                console.log('Employee Privacy Info:'+employeePrivacy);
-            }
-        }).then(function(result){            
+        renderView();
+    });
+    
+    EmployeePrivacy.find({"mail":userName}, function(err, result){
+        isFindFinishedPrivacy = true;
+        console.log("Find EmployeePrivacyInfo Result Code:"+err);  
+        if(result.length > 0){
+            employeePrivacy = result[0];            
+            console.log('Employee Privacy Information:'+employeeInfo);
+        }
+        renderView();
+    });
+
+    db_helper.collection("attendances_201810").find({}, function(err, result){
+        console.log(result);
+    });
+
+    function renderView(){
+        if(isFindFinishedInfo && isFindFinishedPrivacy){
             console.log("Id:"+id);
             console.log("Id Split:"+id_split.toString());
             console.log('User Agent:'+userAgent);
             console.log('UserName:'+userName);
-
             if(employeeInfo != undefined || employeePrivacy != undefined){
                 res.render('attendance_management', {employee_info:employeeInfo, employee_privacy:employeePrivacy, 
                     year:present_year, month:present_month, lastDate:last_date});
             }  
-        });
-    });
-  
+        }           
+    }
 });
 // function findEmployeeInfo(userName, employeeInfo){
 //     if(result.length > 0){

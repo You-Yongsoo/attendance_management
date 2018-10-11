@@ -17,6 +17,7 @@ var users = require('./routes/users');
 var login = require('./routes/auth/login');
 var employee_menu = require('./routes/employee/employee_menu');
 var attendance_management = require('./routes/attendance_management');
+var collection_management = require('./routes/collection_management')
 
 var app = express();
 //var OIDCStrategy = passport_azure_ad.OIDCStrategy;
@@ -121,6 +122,7 @@ app.use('/login', login);
 app.use('/users', users);
 app.use('/employee_menu', employee_menu);
 app.use('/attendance_management', attendance_management);
+app.use('/collection_management', collection_management);
 
 //mongoose.connect('mongodb://localhost/db_attendance_management');
 
