@@ -81,6 +81,7 @@ router.get('/:id', authenticate.auth, function(req, res, next){
         console.log(result);
     });
 
+
     function renderView(){
         if(isFindFinishedInfo && isFindFinishedPrivacy){
             console.log("Id:"+id);
