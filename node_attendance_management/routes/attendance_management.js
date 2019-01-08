@@ -124,6 +124,10 @@ router.get('/:id', authenticate.auth, function(req, res, next){
     }
 });
 
+router.put('/:id', authenticate.auth, function(req, res, next){
+    
+});
+
 router.post('/:id', authenticate.auth, function(req, res, next){
     var id = req.params.id;
     var id_split = id.split('_');
