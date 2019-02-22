@@ -1,5 +1,6 @@
 ﻿use db_attendance_management
 
+db.departments.insert({department_name:'開発本部 システム事業部'});
 db.departments.insert({department_name:'開発本部 システム事業部1'});
 db.departments.insert({department_name:'開発本部 システム事業部2'});
 db.departments.insert({department_name:'経営支援部'});
@@ -32,9 +33,26 @@ db.attendance_states.insert({state:'時間内外勤'});
 db.attendance_states.insert({state:'遅刻'});
 
 db.users.insert({username:'ys-yoo@softwiz.jp', password:'3tKV!g24'});
-db.users.insert({username:'admin@softwiz.jp', password:'1234'});
+db.users.insert({username:'admin', password:'1234'});
 
 
 db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department_id:ObjectId("5b9a16c436f27d5a2590a01b"), class_id:ObjectId("5b7f6c9c285b96dd9569611e"), authority_id:ObjectId("5b7f6c9c285b96dd95696127"), dispatch_id:ObjectId("5b7f6c9c285b96dd95696124")});
 
 db.attendances_201810.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2018-10-03"), start_time:new Date(2018,09,03,09,00), end_time:new Date(2018,09,03,17,45), message:"" }, {unique})
+
+
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-01"), start_time:new Date("2019-02-01T09:00:00Z"), end_time:new Date("2019-02-01T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-04"), start_time:new Date("2019-02-04T09:00:00Z"), end_time:new Date("2019-02-04T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-05"), start_time:new Date("2019-02-05T09:00:00Z"), end_time:new Date("2019-02-05T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-06"), start_time:new Date("2019-02-06T09:00:00Z"), end_time:new Date("2019-02-06T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-07"), start_time:new Date("2019-02-07T09:00:00Z"), end_time:new Date("2019-02-07T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-08"), start_time:new Date("2019-02-08T09:00:00Z"), end_time:new Date("2019-02-08T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-11"), start_time:new Date("2019-02-11T09:00:00Z"), end_time:new Date("2019-02-11T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-12"), start_time:new Date("2019-02-12T09:00:00Z"), end_time:new Date("2019-02-12T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-13"), start_time:new Date("2019-02-13T09:00:00Z"), end_time:new Date("2019-02-13T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-14"), start_time:new Date("2019-02-14T09:00:00Z"), end_time:new Date("2019-02-14T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-15"), start_time:new Date("2019-02-15T09:00:00Z"), end_time:new Date("2019-02-15T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-18"), start_time:new Date("2019-02-18T09:00:00Z"), end_time:new Date("2019-02-18T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-19"), start_time:new Date("2019-02-19T09:00:00Z"), end_time:new Date("2019-02-19T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-20"), start_time:new Date("2019-02-20T09:00:00Z"), end_time:new Date("2019-02-20T17:45:00Z"), message:"" }, {unique:true})
+db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-21"), start_time:new Date("2019-02-21T09:00:00Z"), end_time:new Date("2019-02-21T17:45:00Z"), message:"" }, {unique:true})
