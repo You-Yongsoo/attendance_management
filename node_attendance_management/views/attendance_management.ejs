@@ -48,13 +48,20 @@
 
 			//var year = <%-year%>;
 			//var month = <%-month%>;
-			var attendanceList = <%-JSON.stringify(attendances)%>;
-			for(var i = 0; i < attendanceList.length; i++){
-				var attendance = attendanceList[i];
-				var dateNumber = new Date(attendance.date).getDate();
-				// console.log($('#tbody_attendance #record_'+dateNumber).attr('#holiday_check_'+dateNumber));
-			}
+			<%
+			if (attendances != undefined) {
+
 			
+			%>
+			var attendanceList = <% -JSON.stringify(attendances) %>;
+				for (var i = 0; i < attendanceList.length; i++) {
+					var attendance = attendanceList[i];
+					var dateNumber = new Date(attendance.date).getDate();
+					// console.log($('#tbody_attendance #record_'+dateNumber).attr('#holiday_check_'+dateNumber));
+				}
+			<%
+			}
+			%>
 			// $("#tbody_attendances tr").each(function(i, element){
 			// 	console.log(i+':'+$(element).attr('id'));
 			// });
@@ -106,8 +113,7 @@
 				<tr>
 					<td><%=employee_privacy.name%></td>
 					<td><%=employee_privacy.mail%></td>
-					<td><%=employee_info.department_id.department_name%></td>
-					<td><%=employee_info.class_id.class_name%></td>
+
 				</tr>
 			</tbody>
 		</table>

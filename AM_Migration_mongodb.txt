@@ -1,44 +1,44 @@
 ﻿use db_attendance_management
 
-db.departments.insert({department_name:'開発本部 システム事業部'});
-db.departments.insert({department_name:'開発本部 システム事業部1'});
-db.departments.insert({department_name:'開発本部 システム事業部2'});
-db.departments.insert({department_name:'経営支援部'});
+db.departments.insert({_id:1, department_name:'開発本部 システム事業部'});
+db.departments.insert({_id:2, department_name:'開発本部 システム事業部1'});
+db.departments.insert({_id:3, department_name:'開発本部 システム事業部2'});
+db.departments.insert({_id:4, department_name:'経営支援部'});
 
-db.company_classes.insert({class_name:'社員'});
-db.company_classes.insert({class_name:'課長代理'});
-db.company_classes.insert({class_name:'課長'});
-db.company_classes.insert({class_name:'次長'});
-db.company_classes.insert({class_name:'部長'});
-db.company_classes.insert({class_name:'社長'});
+db.company_classes.insert({_id:1, class_name:'社員'});
+db.company_classes.insert({_id:2, class_name:'課長代理'});
+db.company_classes.insert({_id:3, class_name:'課長'});
+db.company_classes.insert({_id:4, class_name:'次長'});
+db.company_classes.insert({_id:5, class_name:'部長'});
+db.company_classes.insert({_id:6, class_name:'社長'});
 
-db.dispatch_places.insert({dispatch_place:'自社開発'});
-db.dispatch_places.insert({dispatch_place:'株式会社 フォーカスシステムズ'});
-db.dispatch_places.insert({dispatch_place:'IBM'});
-db.dispatch_places.insert({dispatch_place:'株式会社 日立製作所'});
+db.dispatch_places.insert({_id:1, dispatch_place:'自社開発'});
+db.dispatch_places.insert({_id:2, dispatch_place:'株式会社 フォーカスシステムズ'});
+db.dispatch_places.insert({_id:3, dispatch_place:'IBM'});
+db.dispatch_places.insert({_id:4, dispatch_place:'株式会社 日立製作所'});
 
-db.authorities.insert({authority:'社員権限'});
-db.authorities.insert({authority:'チームリーダ権限'});
-db.authorities.insert({authority:'部長権限'});
-db.authorities.insert({authority:'システム管理者権限'});
+db.authorities.insert({_id:1, authority:'社員権限'});
+db.authorities.insert({_id:2, authority:'チームリーダ権限'});
+db.authorities.insert({_id:3, authority:'部長権限'});
+db.authorities.insert({_id:4, authority:'システム管理者権限'});
+
+db.attendance_states.insert({_id:1, state:'正常出社'});
+db.attendance_states.insert({_id:2, state:'早退'});
+db.attendance_states.insert({_id:3, state:'欠勤'});
+db.attendance_states.insert({_id:4, state:'月次休暇'});
+db.attendance_states.insert({_id:5, state:'年次休暇'});
+db.attendance_states.insert({_id:6, state:'時間内外勤'});
+db.attendance_states.insert({_id:7, state:'遅刻'});
 
 db.employees_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'劉 勇綬', birthday:new Date("1988-12-28"), address:'東京都大田区南馬込', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
 
-db.attendance_states.insert({state:'正常出社'});
-db.attendance_states.insert({state:'早退'});
-db.attendance_states.insert({state:'欠勤'});
-db.attendance_states.insert({state:'月次休暇'});
-db.attendance_states.insert({state:'年次休暇'});
-db.attendance_states.insert({state:'時間内外勤'});
-db.attendance_states.insert({state:'遅刻'});
 
 db.users.insert({username:'ys-yoo@softwiz.jp', password:'3tKV!g24'});
 db.users.insert({username:'admin', password:'1234'});
 
+db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department_id:1, class_id:2, authority_id:2, dispatch_id:2});
 
-db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department_id:ObjectId("5b9a16c436f27d5a2590a01b"), class_id:ObjectId("5b7f6c9c285b96dd9569611e"), authority_id:ObjectId("5b7f6c9c285b96dd95696127"), dispatch_id:ObjectId("5b7f6c9c285b96dd95696124")});
-
-db.attendances_201810.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2018-10-03"), start_time:new Date(2018,09,03,09,00), end_time:new Date(2018,09,03,17,45), message:"" }, {unique})
+db.attendances_201810.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2018-10-03"), start_time:new Date(2018,09,03,09,00), end_time:new Date(2018,09,03,17,45), message:"" }, {unique:true})
 
 
 db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new Date("2019-02-01"), start_time:new Date("2019-02-01T09:00:00Z"), end_time:new Date("2019-02-01T17:45:00Z"), message:"" }, {unique:true})
