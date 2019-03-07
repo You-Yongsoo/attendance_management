@@ -1,62 +1,94 @@
 <!DOCTYPE html>
-<html>
+
 <head>
-<title>勤怠管理ページ</title>
-<!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- BootstrapのCSS読み込み -->
-<link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
-<script src='/javascripts/bootstrap.min.js'></script>
-<script src='/javascripts/bootstrap.js'></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
-<script>
-//jQuery Initialize
-//$(document).ready(function(){
-$(function(){
-	//alert("jQuery Initialize");
+	<title>勤怠管理ページ</title>
+	<!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- BootstrapのCSS読み込み -->
+	<link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src='/javascripts/bootstrap.min.js'></script>
+	<script src='/javascripts/bootstrap.js'></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
+	<script>
+		//jQuery Initialize
+		//$(document).ready(function(){
+		$(function () {
 
-});
-function initialize(){
-	<%
-	if(attendances != undefined){
-		//_id, mail, date, start_time, end_time, message
-		console.log(attendances[0].mail);
-	}
-	%>
-}
+		});
 
-function prev_month(){
-	var prevYear, prevMonth;
-	
-	if(<%=month%> == 1){
-		prevYear = <%=year%> - 1;
-		prevMonth = 12;
-	}else{
-		prevYear = <%=year%>;
-		prevMonth = ('00' + (<%=month%> - 1)).slice(-2);
-	}
-	location.href="/attendance_management/"+prevYear+"_"+prevMonth;
-}
+		function initialize() {
+			/*
+			employee_info		//社員情報
+				department_id
+					department_name
+				class_id
+					class_name
+				dispatch_id
+					dispatch_place
+			employee_privacy 	//社員個人情報
+				mail
+				name
+				birthday
+				address
+				phone_number
+				hiredate
+			attendances 		//当月の勤怠情報
+				mail
+				date
+				start_time
+				end_time
+				message
+			year 				//年
+			month 				//月
+			lastDate			//最終日
+			*/
 
-function next_month(){	
-	var nextYear, nextMonth;
+			//var year = <%-year%>;
+			//var month = <%-month%>;
+			var attendanceList = <%-JSON.stringify(attendances)%>;
+			for(var i = 0; i < attendanceList.length; i++){
+				var attendance = attendanceList[i];
+				var dateNumber = new Date(attendance.date).getDate();
+				// console.log($('#tbody_attendance #record_'+dateNumber).attr('#holiday_check_'+dateNumber));
+			}
+			
+			// $("#tbody_attendances tr").each(function(i, element){
+			// 	console.log(i+':'+$(element).attr('id'));
+			// });
+		}
 
-	if(<%=month%> == 12){
-		nextYear = <%=year%> + 1;
-		nextMonth = ('00' + 1).slice(-2);
-	}else{
-		nextYear = <%=year%>;
-		nextMonth = ('00' + (<%=month%> + 1)).slice(-2);
-	}
-	location.href="/attendance_management/"+nextYear+"_"+nextMonth;
-}
-</script>
+		function prev_month() {
+			var prevYear, prevMonth;
+
+			if (<%= month %> == 1) {
+				prevYear = <%=year %> - 1;
+				prevMonth = 12;
+			}else {
+				prevYear = <%=year %>;
+				prevMonth = ('00' + (<%= month %> - 1)).slice(-2);
+			}
+			location.href = "/attendance_management/" + prevYear + "_" + prevMonth;
+		}
+
+		function next_month() {
+			var nextYear, nextMonth;
+
+			if (<%= month %> == 12) {
+				nextYear = <%=year %> + 1;
+				nextMonth = ('00' + 1).slice(-2);
+			}else {
+				nextYear = <%=year %>;
+				nextMonth = ('00' + (<%= month %> + 1)).slice(-2);
+			}
+			location.href = "/attendance_management/" + nextYear + "_" + nextMonth;
+		}
+	</script>
 </head>
-<body onload="initialize()">
 
+<body onload="initialize()">
 	<h1>勤怠管理</h1>
 	<h2>ユーザ情報</h2>
 	<div class="container">
@@ -99,108 +131,110 @@ function next_month(){
 			</tbody>
 		</table>
 	</div>
-	<!-- <div class="container-fluid bg-info">container-fluid</div>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-xs-2 bg-info">col-xs-2</div>
-			<div class="col-xs-6 bg-success">col-xs-6</div>
-			<div class="col-xs-2 bg-warning">col-xs-2</div>
-			<div class="col-xs-2 bg-danger">col-xs-2</div>
-		</div>
-	</div> -->
-
 
 	<h2>勤怠状況</h2>
 	<div class="container">
 		<div class="text-center">
 			<h2>
-				<input type="button" id="prev_month" class="btn" value="先月" onclick="prev_month()"/>
+				<input type="button" id="prev_month" class="btn" value="先月" onclick="prev_month()" />
 				<%=year%>年<%=month%>月
 				<input type="button" id="next_month" class="btn" value="来月" onclick="next_month()" />
-			</h2>		
+			</h2>
 		</div>
 		<form action="/attendance_management/<%=year%>_<%=month%>" name="attendance_form" method="POST">
-		<input name="save" class="btn" type="submit" value="保存"  />
-		<table class="table">
-			<thead>
-				<tr>
-					<th class="text-center">日</th>
-					<th class="text-center">曜日</th>
-					<th class="text-center">休日</th>
-					<th class="text-center">開始時刻</th>
-					<th class="text-center">終了時刻</th>
-					<th class="text-center">時刻自動入力</th>					
-					<th class="text-center">稼動時間</th>
-					<th class="text-center">休憩時間</th>
-					<th class="text-center">出社状況</th>
-					<th class="text-center">コメント</th>
+			<input name="save" class="btn" type="submit" value="保存" />
+			<table class="table">
+				<thead>
+					<tr>
+						<th class="text-center">日</th>
+						<th class="text-center">曜日</th>
+						<th class="text-center">休日</th>
+						<th class="text-center">開始時刻</th>
+						<th class="text-center">終了時刻</th>
+						<th class="text-center">時刻自動入力</th>
+						<th class="text-center">稼動時間</th>
+						<th class="text-center">休憩時間</th>
+						<th class="text-center">出社状況</th>
+						<th class="text-center">コメント</th>
 
-				</tr>
-			</thead>
+					</tr>
+				</thead>
 
-			<tbody>
-				<%
+				<tbody id="tbody_attendances">
+					<%
 				var dayLabels = new Array('日', '月', '火', '水', '木', '金', '土');
-				for(var i = 0; i < lastDate; i++){
-					date = new Date(year, month-1, i+1);
-					var dateId = (date.getMonth()+1)+(date.getDate());
-					var hourId = "hour_"+(date.getMonth()+1)+(date.getDate());
-					var miniteId = "minite_"+(date.getMonth()+1)+(date.getDate());
+				for(var i = 1; i <= lastDate; i++){
+					date = new Date(year, month-1, i);
+					var dateNumber = date.getDate();
+					var holidayCheckId = "holiday_check_"+dateNumber;
+					var recordId = "record_"+dateNumber;
+					var dayId = "day_"+dateNumber;
+					var dateId = "date_"+dateNumber;
+					var startTimeId = "start_"+dateNumber;
+					var startHourId = "start_hour_"+dateNumber;
+					var startMinuteId = "start_minute_"+dateNumber;
+					var endTimeId = "end_"+dateNumber;
+					var endHourId = "end_hour_"+dateNumber;
+					var endMinuteId = "end_minute_"+dateNumber;
+					var autoInputTimeId = "auto_input_"+dateNumber;
+					var workingTimeId = "working_"+dateNumber;
+					var breakTimeId = "break_"+dateNumber;
+					var stateId = "state_"+dateNumber;
+					var messageId = "message_"+dateNumber;
 				%>
-				<tr>					
-					<td class="text-center"><%=date.getDate()%>日</td>
-					<td class="text-center">
-						<%if(date.getDay() == 0){%>
-						<p class="text-warning">
-							<%=dayLabels[date.getDay()]%>
-						</p>
-						<%}else if(date.getDay() == 6){%>
-						<p class="text-primary">
-							<%=dayLabels[date.getDay()]%>
-						</p>
-						<%}else{%>
-						<p class="text-secondary">
-							<%=dayLabels[date.getDay()]%>
-						</p>
-						<%}%>
+					<tr id="<%=recordId%>">
+						<td class="text-center" id="<%=dateId%>"><%=date.getDate()%>日</td>
+						<td class="text-center" id="<%=dayId%>">
+							<%if(date.getDay() == 0){%>
+							<p class="text-warning">
+								<%=dayLabels[date.getDay()]%>
+							</p>
+							<%}else if(date.getDay() == 6){%>
+							<p class="text-primary">
+								<%=dayLabels[date.getDay()]%>
+							</p>
+							<%}else{%>
+							<p class="text-secondary">
+								<%=dayLabels[date.getDay()]%>
+							</p>
+							<%}%>
 					</td>
-					<td class="text-center">
-						<%if(date.getDay() == 0 || date.getDay() == 6){%>
-						○
-						<%}%>
+					<td id="<%=holidayCheckId%>" class="text-center">
+							<%if(date.getDay() == 0 || date.getDay() == 6){%>
+							○
+							<%}%>
 					</td>
-					<td id="start_time" class="text-center">
-						<input type="number" id="<%=hourId%>" name="start_<%=hourId%>" min="00" max="23" style="width: 40px;" />
-						:
-						<input type="number" id="<%=miniteId%>" name="start_<%=miniteId%>" min="00" max="59" style="width: 40px;" />
-					</td>
-					<td id="end_time" class="text-center">
-						<input type="number" id="<%=hourId%>" name="end_<%=hourId%>" min="00" max="23" style="width: 40px;" />
-						:
-						<input type="number" id="<%=miniteId%>" name="end_<%=miniteId%>" min="00" max="59" style="width: 40px;" />
-					</td>
-					<td id="auto_input" class="text-center">
-						<input type="button" class="btn" value="入力" />
-					</td>
-					<td id="working_time" class="text-center"/>
-					<td id="break_time" class="text-center"/>
-					<td id="working_state" class="text-center">
-						<select name="state">
-							<option value="seizyou">正常出勤</option>
-							<option value="vacation">休み</option>
-							<option value="late">遅刻</option>
-							<option value="leave_early">早退</option>
-						</select>
-					</td>
-					<td class="text-center">
-						<input id="message" name="message_<%=dateId%>" type="text"/>
-					</td>
-				</tr>
-				<%}%>
+					<td id="<%=startTimeId%>" class="text-center">
+							<input id="<%=startHourId%>" type="number" min="00" max="23" style="width: 40px;" />
+							:
+							<input id="<%=startMinuteId%>" type="number" min="00" max="59" style="width: 40px;" />
+						</td>
+						<td id="<%=endTimeId%>" class="text-center">
+							<input id="<%=endHourId%>" type="number" min="00" max="23" style="width: 40px;" />
+							:
+							<input id="<%=endMinuteId%>" type="number" min="00" max="59" style="width: 40px;" />
+						</td>
+						<td id="<%=autoInputTimeId%>" class="text-center">
+							<input type="button" class="btn" value="入力" />
+						</td>
+						<td id="<%=workingTimeId%>" class="text-center" />
+						<td id="<%=breakTimeId%>" class="text-center" />
+						<td class="text-center">
+							<select id="<%=stateId%>" name="state">
+								<option value="seizyou">正常出勤</option>
+								<option value="vacation">休み</option>
+								<option value="late">遅刻</option>
+								<option value="leave_early">早退</option>
+							</select>
+						</td>
+						<td class="text-center">
+							<input id="<%=messageId%>" type="text" />
+						</td>
+					</tr>
+					<%}%>
 			</tbody>
 		</table>
 		</form>
 	</div>
 </body>
-
 </html>

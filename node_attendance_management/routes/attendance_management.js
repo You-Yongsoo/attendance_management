@@ -56,52 +56,42 @@ router.get('/:id', authenticate.auth, function(req, res, next){
 
     var attendances_col_name = 'attendances_'+present_year+''+present_month;
     
-    //社員公開情報を抽出
-    // EmployeeInfo.find({"mail":userName}, function(err, result){
-    //     isFindFinishedInfo = true;
-    //     console.log("Find EmployeeInfo Result Code:"+err);
-    //     if(result.length > 0){
-    //         employeeInfo = result[0];
-    //         console.log('Employee Information:'+employeeInfo);
-    //     }
-    //     renderView();
-    // });
     EmployeeInfo.find({"mail":userName})
-        .populate('department_id')
-        .populate('class_id')
-        .populate('dispatch_id')
+    .populate('department_id')
+    .populate('class_id')
+    .populate('dispatch_id')
+    .exec(function(err, result){
+        if(err) throw new Error(err);
+        isFindFinishedInfo = true;
+        console.log("EmployeeInfo:"+result);
+        if(result.length > 0){
+            employeeInfo = result[0];
+        }
+        //社員個人情報を抽出
+        EmployeePrivacy.find({"mail":userName})
         .exec(function(err, result){
-            if(err) throw new Error(err);
-            isFindFinishedInfo = true;
-            console.log("Merge Result:"+result);
-            if(result.length > 0){
-                employeeInfo = result[0];
+            isFindFinishedPrivacy = true;
+            if(err != null){
+                console.log("Find EmployeePrivacyInfo Result Code:"+err);  
             }
-            renderView();
+            if(result.length > 0){
+                employeePrivacy = result[0];            
+                console.log('EmployeePrivacy:'+employeePrivacy);
+            }
+
+            db_helper.collection(attendances_col_name).find({"mail":userName})
+            .sort({date:-1})
+            .toArray(function(err, result){
+                isFindFinishedAttendances = true;
+                if(result.length > 0){
+                    attendances = result;
+                    console.log('Attendance Size:'+attendances.length);
+                }
+                renderView();
+            });
         });
-
-    
-    //社員個人情報を抽出
-    EmployeePrivacy.find({"mail":userName}, function(err, result){
-        isFindFinishedPrivacy = true;
-        console.log("Find EmployeePrivacyInfo Result Code:"+err);  
-        if(result.length > 0){
-            employeePrivacy = result[0];            
-            console.log('Employee Privacy Information:'+employeeInfo);
-        }
-        renderView();
     });
 
-    //
-    db_helper.collection(attendances_col_name).find({}).toArray(function(err, result){
-        isFindFinishedAttendances = true;
-        console.log(result);
-        if(result.length > 0){
-            attendances = result;
-            console.log('Employee Attendances:'+attendances);
-        }
-        renderView();
-    });
 
     function renderView(){
         if(isFindFinishedInfo && isFindFinishedPrivacy && isFindFinishedAttendances){
@@ -109,23 +99,17 @@ router.get('/:id', authenticate.auth, function(req, res, next){
             console.log("Id Split:"+id_split.toString());
             console.log('User Agent:'+userAgent);
             console.log('UserName:'+userName);
-            if(employeeInfo != undefined || employeePrivacy != undefined || attendances != undefined){
-                res.render('attendance_management', 
-                {
-                    employee_info:employeeInfo, 
-                    employee_privacy:employeePrivacy, 
-                    attendances:attendances, 
-                    year:present_year, 
-                    month:present_month, 
-                    lastDate:last_date
-                });
-            }  
+            res.render('attendance_management', 
+            {
+                employee_info:employeeInfo, 
+                employee_privacy:employeePrivacy, 
+                attendances:attendances, 
+                year:present_year, 
+                month:present_month, 
+                lastDate:last_date
+            });
         }           
     }
-});
-
-router.put('/:id', authenticate.auth, function(req, res, next){
-    
 });
 
 router.post('/:id', authenticate.auth, function(req, res, next){
@@ -149,73 +133,5 @@ router.post('/:id', authenticate.auth, function(req, res, next){
     console.log('Attendance Management Post');
     res.redirect(redirectUrl);
 });
-
-// function findEmployeeInfo(userName, employeeInfo){
-//     if(result.length > 0){
-//         employeeInfo = result[0];
-//         console.log('Employee Information:'+employeeInfo);
-//     }
-// }
-
-// function findEmployeePrivacy(userName, employeePrivacy){
-//     if(result.length > 0){
-//         employeePrivacy = result[0];
-//         console.log('Employee Privacy Info:'+employeePrivacy);
-//     }
-// }
-
-// function redirectDateToString(str, delim){
-//     var arr = str.split(delim);
-// }
-
-// async function findEmployeeInfo(userName, employeeInfo){    
-//     // EmployeeInfo.find({"mail":userName}).exec().then(function(result){
-//     //     // console.log("Find EmployeeInfo Result Code:"+err);
-//     //     if(result.length > 0){
-//     //         employeeInfo = result[0];
-//     //         console.log('Employee Information:'+employeeInfo);
-//     //     }
-//     // });
-//     // var process_result = await EmployeeInfo.find({"mail":userName}, await function(err, result){
-//     //     console.log("Find EmployeeInfo Result Code:"+err);
-//     //     if(result.length > 0){
-//     //         employeeInfo = result[0];
-//     //         console.log('Employee Information:'+employeeInfo);
-//     //     }
-//     // });
-//     // return process_result;
-//     EmployeeInfo.find({"mail":userName}, function(err, result){
-//         console.log("Find EmployeeInfo Result Code:"+err);
-//         if(result.length > 0){
-//             employeeInfo = result[0];
-//             console.log('Employee Information:'+employeeInfo);
-//         }
-//     });
-// }
-
-// async function findEmployeePrivacy(userName, employeePrivacy){  
-//     // EmployeePrivacy.find({"mail":userName}).exec(function(err, result){
-//     //     console.log("Find EmployeePrivacyInfo Result Code:"+err);  
-//     //     if(result.length > 0){
-//     //         employeePrivacy = result[0];
-//     //         console.log('Employee Privacy Info:'+employeePrivacy);
-//     //     }
-//     // }); 
-//     EmployeePrivacy.find({"mail":userName}, function(err, result){
-//         console.log("Find EmployeePrivacyInfo Result Code:"+err);  
-//         if(result.length > 0){
-//             employeePrivacy = result[0];
-//             console.log('Employee Privacy Info:'+employeePrivacy);
-//         }
-//     });
-    
-//     // var process_result = await EmployeePrivacy.find({"mail":userName}, await function(err, result){
-//     //     console.log("Find EmployeePrivacyInfo Result Code:"+err);  
-//     //     if(result.length > 0){
-//     //         employeePrivacy = result[0];
-//     //         console.log('Employee Privacy Info:'+employeePrivacy);
-//     //     }
-//     // });
-// }
 
 module.exports = router;
