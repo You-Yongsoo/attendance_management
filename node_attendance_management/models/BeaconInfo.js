@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var beaconInfo_schema = new Schema({
-    macaddress:{type:String, require:true, unique:true},
+    macaddress:{type:Number, require:true, unique:true},
     uuid:{type:String, require:true},
     major:{type:Number, require:true},
     minor:{type:Number, require:true},

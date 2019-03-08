@@ -48,23 +48,18 @@
 
 			//var year = <%-year%>;
 			//var month = <%-month%>;
-			<%
-			if (attendances != undefined) {
-
-			
-			%>
-			var attendanceList = <% -JSON.stringify(attendances) %>;
-				for (var i = 0; i < attendanceList.length; i++) {
-					var attendance = attendanceList[i];
-					var dateNumber = new Date(attendance.date).getDate();
-					// console.log($('#tbody_attendance #record_'+dateNumber).attr('#holiday_check_'+dateNumber));
+			<%if (attendances != undefined) {%>
+				var attendanceList = <%-JSON.stringify(attendances);%>;
+				for(var j = 0; j < attendanceList.length; j++){
+					var attendance_data = attendanceList[j];
+					var date = new Date(attendance_data.date);
+					var startTime = new Date(attendance_data.start_time);
+					var endTime = new Date(attendance_data.end_time);
+					var message = attendance_data.message;
+					// var state = attendance_data.state;
+					console.log(attendance_data);
 				}
-			<%
-			}
-			%>
-			// $("#tbody_attendances tr").each(function(i, element){
-			// 	console.log(i+':'+$(element).attr('id'));
-			// });
+			<%}%>
 		}
 
 		function prev_month() {
@@ -92,13 +87,17 @@
 			}
 			location.href = "/attendance_management/" + nextYear + "_" + nextMonth;
 		}
+
+		function onClickAutoInput(button) {
+			console.log($(button).attr("class"));
+		}
 	</script>
 </head>
 
 <body onload="initialize()">
 	<h1>勤怠管理</h1>
-	<h2>ユーザ情報</h2>
 	<div class="container">
+		<h2>ユーザ情報</h2>
 		<table class="table">
 			<thead>
 				<tr>
@@ -113,7 +112,8 @@
 				<tr>
 					<td><%=employee_privacy.name%></td>
 					<td><%=employee_privacy.mail%></td>
-
+					<td><%=employee_info.department_id.department_name%></td>
+					<td><%=employee_info.class_id.class_name%></td>
 				</tr>
 			</tbody>
 		</table>
@@ -138,8 +138,8 @@
 		</table>
 	</div>
 
-	<h2>勤怠状況</h2>
 	<div class="container">
+		<h2>勤怠状況</h2>
 		<div class="text-center">
 			<h2>
 				<input type="button" id="prev_month" class="btn" value="先月" onclick="prev_month()" />
@@ -168,6 +168,7 @@
 
 				<tbody id="tbody_attendances">
 					<%
+					
 				var dayLabels = new Array('日', '月', '火', '水', '木', '金', '土');
 				for(var i = 1; i <= lastDate; i++){
 					date = new Date(year, month-1, i);
@@ -176,17 +177,17 @@
 					var recordId = "record_"+dateNumber;
 					var dayId = "day_"+dateNumber;
 					var dateId = "date_"+dateNumber;
-					var startTimeId = "start_"+dateNumber;
+					var startTimeId = "start_time_"+dateNumber;
 					var startHourId = "start_hour_"+dateNumber;
 					var startMinuteId = "start_minute_"+dateNumber;
-					var endTimeId = "end_"+dateNumber;
+					var endTimeId = "end_time_"+dateNumber;
 					var endHourId = "end_hour_"+dateNumber;
 					var endMinuteId = "end_minute_"+dateNumber;
 					var autoInputTimeId = "auto_input_"+dateNumber;
 					var workingTimeId = "working_"+dateNumber;
 					var breakTimeId = "break_"+dateNumber;
 					var stateId = "state_"+dateNumber;
-					var messageId = "message_"+dateNumber;
+					var messageId = "message_"+dateNumber;				
 				%>
 					<tr id="<%=recordId%>">
 						<td class="text-center" id="<%=dateId%>"><%=date.getDate()%>日</td>
@@ -211,22 +212,26 @@
 							<%}%>
 					</td>
 					<td id="<%=startTimeId%>" class="text-center">
-							<input id="<%=startHourId%>" type="number" min="00" max="23" style="width: 40px;" />
+							<input id="<%=startHourId%>" class="startHour" type="number" min="00" max="23"
+								style="width: 40px;" />
 							:
-							<input id="<%=startMinuteId%>" type="number" min="00" max="59" style="width: 40px;" />
+							<input id="<%=startMinuteId%>" class="startMinute" type="number" min="00" max="59"
+								style="width: 40px;" />
 						</td>
 						<td id="<%=endTimeId%>" class="text-center">
-							<input id="<%=endHourId%>" type="number" min="00" max="23" style="width: 40px;" />
+							<input id="<%=endHourId%>" class="endHour" type="number" min="00" max="23"
+								style="width: 40px;" />
 							:
-							<input id="<%=endMinuteId%>" type="number" min="00" max="59" style="width: 40px;" />
+							<input id="<%=endMinuteId%>" class="endMinute" type="number" min="00" max="59"
+								style="width: 40px;" />
 						</td>
 						<td id="<%=autoInputTimeId%>" class="text-center">
-							<input type="button" class="btn" value="入力" />
+							<button type="button" class="btn btn-primary" onclick="onClickAutoInput(this)">自動入力</button>
 						</td>
 						<td id="<%=workingTimeId%>" class="text-center" />
 						<td id="<%=breakTimeId%>" class="text-center" />
 						<td class="text-center">
-							<select id="<%=stateId%>" name="state">
+							<select class="form-control" id="<%=stateId%>" name="state">
 								<option value="seizyou">正常出勤</option>
 								<option value="vacation">休み</option>
 								<option value="late">遅刻</option>
@@ -234,7 +239,7 @@
 							</select>
 						</td>
 						<td class="text-center">
-							<input id="<%=messageId%>" type="text" />
+							<input class="form-control" id="<%=messageId%>" type="text" />
 						</td>
 					</tr>
 					<%}%>

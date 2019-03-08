@@ -15,30 +15,16 @@
 		<div class="container">
 			<h1><%= title %></h1>
 			<form action="/login" name="login_form" method="POST">
-			<table>
-				<tr>
-					<td>
-						<div>ID :</div>
-					</td>
-					<td>
-						<div>
-							<input type="text" name="username" />
-						</div>
-					</td>
-				</tr>
+			<div class="form_group">
+				<label for="username">Mail Address</label>
+				<input type="email" class="form-control" id="username" name="username" placeholder="Enter email"/>
+			</div>
+			<div class="form_group">
+				<label for="username">Password</label>				
+				<input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
+			</div>
 
-				<tr>
-					<td>
-						<div>Password :</div>
-					</td>
-					<td>
-						<div>
-							<input type="password" name="password" />
-						</div>
-					</td>
-				</tr>
-			</table>
-			<input name="submit" class="btn" type="submit" value="login"  />
+			<input name="submit" class="btn btn-primary" type="submit" value="login"  />
 			</form>
 			<h2><%= login_result%></h2>
 		</div>
