@@ -11,6 +11,7 @@
 	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 	<script src='/javascripts/bootstrap.min.js'></script>
 	<script src='/javascripts/bootstrap.js'></script>
+	<script src='/javascripts/dateformat.js'></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 	<script>
 		//jQuery Initialize
@@ -48,18 +49,37 @@
 
 			//var year = <%-year%>;
 			//var month = <%-month%>;
+			
 			<%if (attendances != undefined) {%>
-				var attendanceList = <%-JSON.stringify(attendances);%>;
-				for(var j = 0; j < attendanceList.length; j++){
+				var attendanceList = <%- JSON.stringify(attendances);%>;
+				var timeFormat = new DateFormat('HH:mm');
+				for (var j = 0; j < attendanceList.length; j++) {
 					var attendance_data = attendanceList[j];
 					var date = new Date(attendance_data.date);
 					var startTime = new Date(attendance_data.start_time);
 					var endTime = new Date(attendance_data.end_time);
 					var message = attendance_data.message;
-					// var state = attendance_data.state;
-					console.log(attendance_data);
+					var dateNumber = date.getDate();
+					var holidayCheckId = "#holiday_check_" + dateNumber;
+					var recordId = "#record_" + dateNumber;
+					var dayId = "#day_" + dateNumber;
+					var dateId = "#date_" + dateNumber;
+					var startTimeId = "#start_time_" + dateNumber;
+					var endTimeId = "#end_time_" + dateNumber;
+					var autoInputTimeId = "#auto_input_" + dateNumber;
+					var workingTimeId = "#working_" + dateNumber;
+					var breakTimeId = "#break_" + dateNumber;
+					var stateId = "#state_" + dateNumber;
+					var messageId = "#message_" + dateNumber;
+					var state = attendance_data.state;
+					
+					console.log(attendance_data.start_time);
+					$(startTimeId).val(timeFormat.format(startTime));
+					$(endTimeId).val(timeFormat.format(endTime));
 				}
+
 			<%}%>
+			
 		}
 
 		function prev_month() {
@@ -77,7 +97,6 @@
 
 		function next_month() {
 			var nextYear, nextMonth;
-
 			if (<%= month %> == 12) {
 				nextYear = <%=year %> + 1;
 				nextMonth = ('00' + 1).slice(-2);
@@ -89,7 +108,33 @@
 		}
 
 		function onClickAutoInput(button) {
-			console.log($(button).attr("class"));
+			var buttonId = $(button).attr("id");
+			var splitValue = buttonId.split('_');
+			var dateNumber = splitValue[splitValue.length-1];			
+			var startTimeId = "#start_time_" + dateNumber;
+			var endTimeId = "#end_time_" + dateNumber;
+			var stateId = "#state_"+dateNumber;
+			$(startTimeId).val('09:00');
+			$(endTimeId).val('18:00');
+			$(stateId).val('attendance');
+		}
+
+		function onClickAllAutoInput(){
+			var recordLength = $('#tbody_attendances tr').length;
+			for(var i = 1; i <= recordLength; i++){
+				//var record_id = 'record_'+i;
+				var holidayCheckId = "#holiday_check_" + i;
+				
+				console.log($(holidayCheckId).val());
+				if($(holidayCheckId).val() == undefined){
+					var startTimeId = "#start_time_" + i;
+					var endTimeId = "#end_time_" + i;
+					var stateId = "#state_" + i;
+					$(startTimeId).val('09:00');
+					$(endTimeId).val('18:00');
+					$(stateId).val('attendance');
+				}
+			}
 		}
 	</script>
 </head>
@@ -110,10 +155,16 @@
 			</thead>
 			<tbody>
 				<tr>
+					<%
+					if(employee_info != undefined && employee_privacy != undefined){
+					%>
 					<td><%=employee_privacy.name%></td>
 					<td><%=employee_privacy.mail%></td>
 					<td><%=employee_info.department_id.department_name%></td>
 					<td><%=employee_info.class_id.class_name%></td>
+					<%
+					}
+					%>
 				</tr>
 			</tbody>
 		</table>
@@ -129,10 +180,17 @@
 			</thead>
 			<tbody>
 				<tr>
+					
+					<%
+					if(employee_privacy != undefined){
+					%>
 					<td><%=employee_privacy.address%></td>
 					<td><%=employee_privacy.phone_number%></td>
 					<td><%=employee_privacy.birthday%></td>
 					<td><%=employee_privacy.hiredate%></td>
+					<%
+					}
+					%>
 				</tr>
 			</tbody>
 		</table>
@@ -142,13 +200,14 @@
 		<h2>勤怠状況</h2>
 		<div class="text-center">
 			<h2>
-				<input type="button" id="prev_month" class="btn" value="先月" onclick="prev_month()" />
+				<input id="prev_month" class="btn btn-primary" type="button" value="先月" onclick="prev_month()" />
 				<%=year%>年<%=month%>月
-				<input type="button" id="next_month" class="btn" value="来月" onclick="next_month()" />
+				<input id="next_month" class="btn btn-primary" type="button" value="来月" onclick="next_month()" />
 			</h2>
 		</div>
 		<form action="/attendance_management/<%=year%>_<%=month%>" name="attendance_form" method="POST">
-			<input name="save" class="btn" type="submit" value="保存" />
+			<input id="save" name="save" class="btn" type="submit" value="保存" />
+			<input id="all_auto_input" class="btn" type="button" value="一括入力" onclick="onClickAllAutoInput()"/>
 			<table class="table">
 				<thead>
 					<tr>
@@ -162,7 +221,6 @@
 						<th class="text-center">休憩時間</th>
 						<th class="text-center">出社状況</th>
 						<th class="text-center">コメント</th>
-
 					</tr>
 				</thead>
 
@@ -195,53 +253,47 @@
 							<%if(date.getDay() == 0){%>
 							<p class="text-warning">
 								<%=dayLabels[date.getDay()]%>
-							</p>
 							<%}else if(date.getDay() == 6){%>
 							<p class="text-primary">
 								<%=dayLabels[date.getDay()]%>
-							</p>
 							<%}else{%>
 							<p class="text-secondary">
 								<%=dayLabels[date.getDay()]%>
+							<%}%>
+						</p>
+					</td>
+					<td>
+							<%if(date.getDay() == 0 || date.getDay() == 6){%>
+							<p id="<%=holidayCheckId%>" class="text-center" value="true">
+								○
 							</p>
 							<%}%>
 					</td>
-					<td id="<%=holidayCheckId%>" class="text-center">
-							<%if(date.getDay() == 0 || date.getDay() == 6){%>
-							○
-							<%}%>
+					<td class="text-center">
+						<input id="<%=startTimeId%>" type="time" />	
 					</td>
-					<td id="<%=startTimeId%>" class="text-center">
-							<input id="<%=startHourId%>" class="startHour" type="number" min="00" max="23"
-								style="width: 40px;" />
-							:
-							<input id="<%=startMinuteId%>" class="startMinute" type="number" min="00" max="59"
-								style="width: 40px;" />
-						</td>
-						<td id="<%=endTimeId%>" class="text-center">
-							<input id="<%=endHourId%>" class="endHour" type="number" min="00" max="23"
-								style="width: 40px;" />
-							:
-							<input id="<%=endMinuteId%>" class="endMinute" type="number" min="00" max="59"
-								style="width: 40px;" />
-						</td>
-						<td id="<%=autoInputTimeId%>" class="text-center">
-							<button type="button" class="btn btn-primary" onclick="onClickAutoInput(this)">自動入力</button>
-						</td>
-						<td id="<%=workingTimeId%>" class="text-center" />
-						<td id="<%=breakTimeId%>" class="text-center" />
-						<td class="text-center">
-							<select class="form-control" id="<%=stateId%>" name="state">
-								<option value="seizyou">正常出勤</option>
-								<option value="vacation">休み</option>
-								<option value="late">遅刻</option>
-								<option value="leave_early">早退</option>
-							</select>
-						</td>
-						<td class="text-center">
-							<input class="form-control" id="<%=messageId%>" type="text" />
-						</td>
-					</tr>
+					<td class="text-center">
+						<input id="<%=endTimeId%>" type="time" />
+					</td> 
+					<td class="text-center">
+						<button type="button" id="<%=autoInputTimeId%>" class="btn btn-primary"
+								onclick="onClickAutoInput(this)">自動入力</button>
+					</td>
+					<td id="<%=workingTimeId%>" class="text-center" />
+					<td id="<%=breakTimeId%>" class="text-center" />
+					<td class="text-center">
+						<select class="form-control" id="<%=stateId%>" name="state">
+							<option value="attendance">正常出勤</option>
+							<option value="late">遅刻</option>
+							<option value="leave_early">早退</option>
+							<option value="monthly_vacation">月次休暇</option>
+							<option value="every_year_vacation">年次休暇</option>							
+						</select>
+					</td>
+					<td class="text-center">
+						<input class="form-control" id="<%=messageId%>" type="text" />
+					</td>
+				</tr>
 					<%}%>
 			</tbody>
 		</table>
