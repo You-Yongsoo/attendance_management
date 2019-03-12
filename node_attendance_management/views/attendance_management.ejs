@@ -22,6 +22,7 @@
 
 		function initialize() {
 			/*
+			state				//出社状況のリスト
 			employee_info		//社員情報
 				department_id
 					department_name
@@ -44,7 +45,7 @@
 				message
 			year 				//年
 			month 				//月
-			lastDate			//最終日
+			last_date			//最終日
 			*/
 
 			//var year = <%-year%>;
@@ -53,11 +54,12 @@
 			<%if (attendances != undefined) {%>
 				var attendanceList = <%- JSON.stringify(attendances);%>;
 				var timeFormat = new DateFormat('HH:mm');
+				var timeZoneOffest = 1000 * 60 * 60 * 9;
 				for (var j = 0; j < attendanceList.length; j++) {
 					var attendance_data = attendanceList[j];
 					var date = new Date(attendance_data.date);
 					var startTime = new Date(attendance_data.start_time);
-					var endTime = new Date(attendance_data.end_time);
+					var endTime = new Date(attendance_data.end_time);					
 					var message = attendance_data.message;
 					var dateNumber = date.getDate();
 					var holidayCheckId = "#holiday_check_" + dateNumber;
@@ -73,13 +75,58 @@
 					var messageId = "#message_" + dateNumber;
 					var state = attendance_data.state;
 					
-					console.log(attendance_data.start_time);
+					startTime.setTime(startTime.getTime() - startTime.getTimezoneOffset() - timeZoneOffest);
+					endTime.setTime(endTime.getTime() - endTime.getTimezoneOffset() - timeZoneOffest);
+
 					$(startTimeId).val(timeFormat.format(startTime));
 					$(endTimeId).val(timeFormat.format(endTime));
+					if(endTime.getTime() > startTime.getTime()){
+						var workingTime = new Date(endTime.getTime() - startTime.getTime());
+						workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
+						$(workingTimeId).text(timeFormat.format(workingTime));
+					}
+
+					if(state != undefined){
+						$(stateId).val(state);
+					}
 				}
 
 			<%}%>
 			
+		}
+		
+		function onBlurTimeInput(timeBox){			
+			var timeBoxId = $(timeBox).attr("id");
+			var splitValue = timeBoxId.split('_');
+			var dateNumber = splitValue[splitValue.length-1];
+			var startTimeId = "#start_time_" + dateNumber;
+			var endTimeId = "#end_time_" + dateNumber;
+			var workingTimeId = "#working_"+dateNumber;
+			var breakTimeId = "#break_"+dateNumber;
+			var stateId = "#state_"+dateNumber;
+
+			var timeFormat = new DateFormat('HH:mm');
+			var timeZoneOffest = 1000 * 60 * 60 * 9;
+			var startTimeValue = $(startTimeId).val();
+			var endTimeValue = $(endTimeId).val();
+			if(startTimeValue != '' && endTimeValue != ''){
+				var startTime  = new Date(startTimeValue);
+				var endTime = new Date(endTimeValue);
+				console.log('StartTime:'+startTime);
+				console.log('EndTime:'+endTime);
+				if(endTime.getTime() > startTime.getTime()){
+					var workingTime = new Date(endTime.getTime() - startTime.getTime());
+					workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
+					$(workingTimeId).text(timeFormat.format(workingTime));
+					
+					console.log('Working Time:'+workingTime);
+				}
+			}else{
+				$(workingTimeId).text('');
+				$(breakTimeId).text('');
+			}
+			// var startTime = new Date(<%=year%>, <%=month%>, dateNumber, 9, 0);
+			// var endTime = new Date(<%=year%>, <%=month%>, dateNumber, 18, 0);
 		}
 
 		function prev_month() {
@@ -114,25 +161,54 @@
 			var startTimeId = "#start_time_" + dateNumber;
 			var endTimeId = "#end_time_" + dateNumber;
 			var stateId = "#state_"+dateNumber;
-			$(startTimeId).val('09:00');
-			$(endTimeId).val('18:00');
-			$(stateId).val('attendance');
+			var workingTimeId = "#working_"+dateNumber;
+			var breakTimeId = "#break_"+dateNumber;
+
+			var timeFormat = new DateFormat('HH:mm');
+			var timeZoneOffest = 1000 * 60 * 60 * 9;
+			var startTime = new Date(<%=year%>, <%=month%>, dateNumber, 9, 0);
+			var endTime = new Date(<%=year%>, <%=month%>, dateNumber, 18, 0);
+			
+			$(startTimeId).val(timeFormat.format(startTime));
+			$(endTimeId).val(timeFormat.format(endTime));
+			if(endTime.getTime() > startTime.getTime()){
+				var workingTime = new Date(endTime.getTime() - startTime.getTime());
+				workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
+				$(workingTimeId).text(timeFormat.format(workingTime));
+			}
 		}
 
 		function onClickAllAutoInput(){
 			var recordLength = $('#tbody_attendances tr').length;
+			var timeFormat = new DateFormat('HH:mm');
+			var timeZoneOffest = 1000 * 60 * 60 * 9;
+			
 			for(var i = 1; i <= recordLength; i++){
 				//var record_id = 'record_'+i;
 				var holidayCheckId = "#holiday_check_" + i;
+				var startTimeId = "#start_time_" + i;
+				var endTimeId = "#end_time_" + i;
+				var stateId = "#state_" + i;
+				var workingTimeId = "#working_"+ i;
+				var breakTimeId = "#break_"+ i;
 				
-				console.log($(holidayCheckId).val());
 				if($(holidayCheckId).val() == undefined){
-					var startTimeId = "#start_time_" + i;
-					var endTimeId = "#end_time_" + i;
-					var stateId = "#state_" + i;
-					$(startTimeId).val('09:00');
-					$(endTimeId).val('18:00');
-					$(stateId).val('attendance');
+					
+					var startTime = new Date(<%=year%>, <%=month%>, i, 9, 0);
+					var endTime = new Date(<%=year%>, <%=month%>, i, 18, 0);
+					
+					$(startTimeId).val(timeFormat.format(startTime));
+					$(endTimeId).val(timeFormat.format(endTime));
+					if(endTime.getTime() > startTime.getTime()){
+						var workingTime = new Date(endTime.getTime() - startTime.getTime());
+						workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
+						$(workingTimeId).text(timeFormat.format(workingTime));
+					}
+				}else{
+					$(startTimeId).val("");
+					$(endTimeId).val("");
+					$(workingTimeId).text("");
+					
 				}
 			}
 		}
@@ -186,8 +262,8 @@
 					%>
 					<td><%=employee_privacy.address%></td>
 					<td><%=employee_privacy.phone_number%></td>
-					<td><%=employee_privacy.birthday%></td>
-					<td><%=employee_privacy.hiredate%></td>
+					<td><%=employee_privacy.birthday.toLocaleDateString()%></td>
+					<td><%=employee_privacy.hiredate.toLocaleDateString()%></td>
 					<%
 					}
 					%>
@@ -228,7 +304,7 @@
 					<%
 					
 				var dayLabels = new Array('日', '月', '火', '水', '木', '金', '土');
-				for(var i = 1; i <= lastDate; i++){
+				for(var i = 1; i <= last_date; i++){
 					date = new Date(year, month-1, i);
 					var dateNumber = date.getDate();
 					var holidayCheckId = "holiday_check_"+dateNumber;
@@ -270,24 +346,31 @@
 							<%}%>
 					</td>
 					<td class="text-center">
-						<input id="<%=startTimeId%>" type="time" />	
+						<input id="<%=startTimeId%>" onblur="onBlurTimeInput(this)" type="time" />	
 					</td>
 					<td class="text-center">
-						<input id="<%=endTimeId%>" type="time" />
+						<input id="<%=endTimeId%>" onblur="onBlurTimeInput(this)" type="time" />
 					</td> 
 					<td class="text-center">
 						<button type="button" id="<%=autoInputTimeId%>" class="btn btn-primary"
 								onclick="onClickAutoInput(this)">自動入力</button>
 					</td>
-					<td id="<%=workingTimeId%>" class="text-center" />
+					<td class="text-center" >
+						<p id="<%=workingTimeId%>"></p>
+					</td>
 					<td id="<%=breakTimeId%>" class="text-center" />
 					<td class="text-center">
 						<select class="form-control" id="<%=stateId%>" name="state">
-							<option value="attendance">正常出勤</option>
-							<option value="late">遅刻</option>
-							<option value="leave_early">早退</option>
-							<option value="monthly_vacation">月次休暇</option>
-							<option value="every_year_vacation">年次休暇</option>							
+							<%
+							if(attendance_states != undefined){
+								for(var j = 0; j < attendance_states.length; j++){
+									
+							%>
+							<option value="<%=attendance_states[j]._id%>"><%=attendance_states[j].state%></option>
+							<%
+								}
+							}
+							%>
 						</select>
 					</td>
 					<td class="text-center">
