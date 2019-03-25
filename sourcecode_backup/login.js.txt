@@ -1,0 +1,41 @@
+﻿
+
+// router.post('/', function(request, response, next){
+//     console.log("catch the post request");
+//     response.setHeader('Content-Type', 'text/plain');
+
+//     // パラメータ名、usernameとpassを出力
+//     console.log(request.body.username);
+//     console.log(request.body.password);
+
+//     var username = request.body.username;
+//     var password = request.body.password;
+
+//     User.find({ "username" : username }, function(err, result){
+//         if (err)
+//             console.log(err);
+
+//         if (result.length == 0){
+//             response.render('login', {title:'Login', login_result:'アカウントが存在しません'});
+//             // 新規登録
+//             // var user = new User();
+
+//             // user.username = username;
+//             // user.password = password;
+
+//             // user.save(function(err){
+//             //     if (err) console.log(err);
+//             //     response.send("new_created");
+//             // });
+//         }
+//         // usernameがDBに存在した場合
+//         else{
+//             if (result[0].password == password)
+//                 //response.send("true");
+//                 response.redirect('/employee_menu');
+//             else
+//                 response.render('login', {title:'login', login_result:''});
+//                 //response.render('login', {title:'Login', login_result:'IDかパスワードが一致しません'});
+//         }
+//     });
+// });

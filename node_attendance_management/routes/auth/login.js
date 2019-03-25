@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var passport_local = require('passport-local');
+// var passport_azure = require('passport-azure-ad');
 
 var User = require('../../models/User');
 
@@ -70,6 +71,16 @@ app.get('/err', function(req, res){
     res.render('login', {title:'Login', login_result:'ログイン失敗'});
 });
 
+app.post('/callback', 
+    passport.authenticate('saml', {
+        failureRedirect:'/', 
+        failureFlash:true,
+    }),
+    function(req, res){
+        res.redirect('/employee_menu');
+    }
+);
+
 //----------------------------------------------------------
 //参照
 //https://qiita.com/tinymouse/items/fa910bf80a038c7f9ccb
@@ -83,45 +94,5 @@ app.post('/',
         res.redirect('/employee_menu');
     }
 );
-
-// router.post('/', function(request, response, next){
-//     console.log("catch the post request");
-//     response.setHeader('Content-Type', 'text/plain');
-
-//     // パラメータ名、usernameとpassを出力
-//     console.log(request.body.username);
-//     console.log(request.body.password);
-
-//     var username = request.body.username;
-//     var password = request.body.password;
-
-//     User.find({ "username" : username }, function(err, result){
-//         if (err)
-//             console.log(err);
-
-//         if (result.length == 0){
-//             response.render('login', {title:'Login', login_result:'アカウントが存在しません'});
-//             // 新規登録
-//             // var user = new User();
-
-//             // user.username = username;
-//             // user.password = password;
-
-//             // user.save(function(err){
-//             //     if (err) console.log(err);
-//             //     response.send("new_created");
-//             // });
-//         }
-//         // usernameがDBに存在した場合
-//         else{
-//             if (result[0].password == password)
-//                 //response.send("true");
-//                 response.redirect('/employee_menu');
-//             else
-//                 response.render('login', {title:'login', login_result:''});
-//                 //response.render('login', {title:'Login', login_result:'IDかパスワードが一致しません'});
-//         }
-//     });
-// });
 
 module.exports = app;

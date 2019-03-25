@@ -7,8 +7,10 @@ var bodyParser = require('body-parser');
 //var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
-var db_helper = require('./routes/database/db_helper');
-//var passport_azure_ad = require('passport-azure-ad');
+var fs = require('fs');
+
+// var passport_azure_ad = require('passport-azure-ad');
+var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 //var bunyan = require('bunyan');
 // var mongoose = require('mongoose');
 
@@ -19,81 +21,12 @@ var employee_menu = require('./routes/employee/employee_menu');
 var attendance_management = require('./routes/attendance_management');
 var collection_management = require('./routes/collection_management')
 var collection_menu = require('./routes/collection_menu');
+var db_helper = require('./routes/database/db_helper');
+
+var config_filepath = "./config/config.json";
+var config_json = fs.readFileSync(config_filepath, 'utf-8');
 
 var app = express();
-//var OIDCStrategy = passport_azure_ad.OIDCStrategy;
-// var log = bunyan.createLogger({
-//   name:'Microsoft OIDC Web Application'
-// });
-
-/*
-// passport.use(new OIDCStrategy({
-//   //OAUTH 2.0 トークン エンドポイント
-//   identityMetadata: 'https://login.microsoftonline.com/fd43a157-8308-4b5f-9ed9-81ba7c87b966/.well-known/openid-configuration',
-//   //アプリケーションID
-//   clientID: '54acf2c3-6bfd-4397-9e93-9a4629e3d6af',
-//   clientSecret: 'usrfaYUEiQ1/6Q1bhfRG85GmgJUhlpOVoGlqKRDiKyg=',
-//   responseType: 'id_token',
-//   responseMode: 'form_post',
-//   redirectUrl: 'https://localhost:3000/',
-//   scope:'openid'
-//   // allowHttpForRedirectUrl: config.creds.allowHttpForRedirectUrl,
-//   // validateIssuer: config.creds.validateIssuer,
-//   // isB2C: config.creds.isB2C,
-//   // issuer: config.creds.issuer,
-//   // passReqToCallback: config.creds.passReqToCallback,
-//   // scope: config.creds.scope,
-//   // loggingLevel: config.creds.loggingLevel,
-//   // nonceLifetime: config.creds.nonceLifetime,
-//   // nonceMaxAmount: config.creds.nonceMaxAmount,
-//   // useCookieInsteadOfSession: config.creds.useCookieInsteadOfSession,
-//   // cookieEncryptionKeys: config.creds.cookieEncryptionKeys,
-//   // clockSkew: config.creds.clockSkew,
-// },
-// function(iss, sub, profile, accessToken, refreshToken, done) {
-//   if (!profile.oid) {
-//     return done(new Error("No oid found"), null);
-//   }
-//   // asynchronous verification, for effect...
-//   process.nextTick(function () {
-//     findByOid(profile.oid, function(err, user) {
-//       if (err) {
-//         return done(err);
-//       }
-//       if (!user) {
-//         // "Auto-registration"
-//         users.push(profile);
-//         return done(null, profile);
-//       }
-//       return done(null, user);
-//     });
-//   });
-// }
-// ));
-*/
-
-
-
-// //mongoose
-// mongoose.connect('mongodb://localhost/db_attendance_management');
-
-// mongoose.connection.on('connected', function(){
-//   console.log('DB Connected');
-//   is_connected_db = true;
-// });
-
-// mongoose.connection.on( 'error', function(err){
-//   console.log( 'Failed to connect a mongo db : ' + err );
-// });
-
-// // mongoose.disconnect() を実行すると、disconnected => close の順番でコールされる
-// mongoose.connection.on( 'disconnected', function(){
-//   console.log( 'DB Disconnected.' );
-// });
-
-// mongoose.connection.on( 'close', function(){
-//   console.log( 'DB Connection closed.' );
-// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -112,9 +45,17 @@ app.use(session({
   resave:false,
   saveUninitialized:true,
   secret:'softwiz',
+  cookie:{
+    httpOnly:false
+  }
 }));
 
 //認証ミドルウェアpassportの初期化
+passport.use(new OIDCStrategy({
+  identityMetadata: 'https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration',
+  clientID:'54acf2c3-6bfd-4397-9e93-9a4629e3d6af'
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 

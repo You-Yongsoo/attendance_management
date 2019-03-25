@@ -1,0 +1,38 @@
+﻿app.js
+
+// //mongoose
+// mongoose.connect('mongodb://localhost/db_attendance_management');
+
+// mongoose.connection.on('connected', function(){
+//   console.log('DB Connected');
+//   is_connected_db = true;
+// });
+
+// mongoose.connection.on( 'error', function(err){
+//   console.log( 'Failed to connect a mongo db : ' + err );
+// });
+
+// // mongoose.disconnect() を実行すると、disconnected => close の順番でコールされる
+// mongoose.connection.on( 'disconnected', function(){
+//   console.log( 'DB Disconnected.' );
+// });
+
+// mongoose.connection.on( 'close', function(){
+//   console.log( 'DB Connection closed.' );
+// });
+
+
+// passport.use(new SamlStrategy({
+//   identityMetadata: 'https://login.microsoftonline.com/fd43a157-8308-4b5f-9ed9-81ba7c87b966/federationmetadata/2007-06/federationmetadata.xml',
+//   loginCallback: 'http://localhost:3000/attendance_management/login/callback/',
+//   logoutCallback: 'http://localhost:3000/attendance_management/logout/callback/',
+//   issuer: 'http://localhost:3000/attendance_management',
+//   appUrl: 'http://localhost:3000/attendance_management'
+//   // privateCert: fs.readFileSync('./private.pem', 'utf-8'),
+//   // publicCert: fs.readFileSync('./public.pem', 'utf-8')
+// }, function(profile, done) {
+//   // when authenticated, simply hold profile in session
+//   process.nextTick(function () {
+//     done(null, profile);
+//   });
+// }));

@@ -1,0 +1,11 @@
+﻿フェデレーションメタデータ
+https://login.microsoftonline.com/fd43a157-8308-4b5f-9ed9-81ba7c87b966/federationmetadata/2007-06/federationmetadata.xml
+
+identityMetadata
+https://login.microsoftonline.com/common/.well-known/openid-configuration
+
+OAUTH2.0承認エンドポイント
+https://login.microsoftonline.com/organizations/oauth2/authorize
+
+組み合わせIdentityMetadata
+https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration
