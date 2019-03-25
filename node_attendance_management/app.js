@@ -53,7 +53,8 @@ app.use(session({
 //認証ミドルウェアpassportの初期化
 passport.use(new OIDCStrategy({
   identityMetadata: 'https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration',
-  clientID:'54acf2c3-6bfd-4397-9e93-9a4629e3d6af'
+  clientID:'54acf2c3-6bfd-4397-9e93-9a4629e3d6af',
+  
 }));
 
 app.use(passport.initialize());
