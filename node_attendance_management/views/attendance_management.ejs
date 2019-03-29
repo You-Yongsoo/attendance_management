@@ -119,14 +119,14 @@
 					workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
 					$(workingTimeId).text(timeFormat.format(workingTime));
 					
-					console.log('Working Time:'+workingTime);
+					if(working.getTime() >= 1000 * 60 * 60 * 8){
+						$(breakTimeId).text('01:00');		
+					}
 				}
 			}else{
 				$(workingTimeId).text('');
 				$(breakTimeId).text('');
 			}
-			// var startTime = new Date(<%=year%>, <%=month%>, dateNumber, 9, 0);
-			// var endTime = new Date(<%=year%>, <%=month%>, dateNumber, 18, 0);
 		}
 
 		function prev_month() {
@@ -216,8 +216,9 @@
 </head>
 
 <body onload="initialize()">
-	<h1>勤怠管理</h1>
+    <a href="/logout">Log Out</a>
 	<div class="container">
+		<h1>勤怠管理</h1>
 		<h2>ユーザ情報</h2>
 		<table class="table">
 			<thead>
@@ -366,7 +367,7 @@
 								for(var j = 0; j < attendance_states.length; j++){
 									
 							%>
-							<option value="<%=attendance_states[j]._id%>"><%=attendance_states[j].state%></option>
+							<option value="<%=attendance_states[j].state%>"><%=attendance_states[j].state%></option>
 							<%
 								}
 							}

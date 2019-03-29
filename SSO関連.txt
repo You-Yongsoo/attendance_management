@@ -9,3 +9,15 @@ https://login.microsoftonline.com/organizations/oauth2/authorize
 
 組み合わせIdentityMetadata
 https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration
+
+common
+ fd43a157-8308-4b5f-9ed9-81ba7c87b966
+
+
+新しいアプリケーションのクライアントシークレットキー
+
+25Vm-t[WmOd7UU#h:nI
+
+
+関連サイト：
+https://docs.microsoft.com/ja-jp/azure/active-directory/develop/quickstart-v2-javascript#option-1-register-and-auto-configure-your-app-and-then-download-your-code-sample

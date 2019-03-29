@@ -12,44 +12,66 @@ var EmployeeInfo = require('../models/EmployeeInfo');
 var passport = require('passport');
 
 /* GET home page. */
-app.get('/', authenticate.auth, function(req, res, next) {
+app.get('/attendanceState', authenticate.auth, function(req, res, next) {
     AttendanceState.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
         }
-    });
+        
+        res.render('collection_management');
+    }); 
+});
 
+app.get('/companyClass', authenticate.auth, function(req, res, next) {
     CompanyClass.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
         }
-    });
 
+    });
+    
+});
+
+app.get('/companyDepartment', authenticate.auth, function(req, res, next) {
     CompanyDepartment.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
         }
     });
+    
+});
 
+app.get('/dispatchPlace', authenticate.auth, function(req, res, next) {
     DispatchPlace.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
         }
     });
+    
+});
 
+app.get('/employeePrivacy', authenticate.auth, function(req, res, next) {
     EmployeePrivacy.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
         }
     });
+    
+    
+});
 
+app.get('/employeeInfo', authenticate.auth, function(req, res, next) {
     EmployeeInfo.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
         }
     });
-    
-    res.render('collection_management');
 });
+
+
+
+
+
+
 
 module.exports = app;

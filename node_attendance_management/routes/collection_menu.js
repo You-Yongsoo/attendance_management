@@ -7,8 +7,9 @@ var router = express.Router();
 
 app.get('/', authenticate.auth, function(req, res) {  
   var userAgent = req.headers['user-agent'].toLowerCase();
+  var userName = req.user._json.preferred_username;
   console.log('User Agent:'+userAgent);
-  console.log(req.user);
+  console.log('User Name:'+userName);
   
   res.render('./collection_menu');
 });

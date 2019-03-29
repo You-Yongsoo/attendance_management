@@ -1,14 +1,11 @@
 /*
  * 認証チェック
  */
-
-exports.auth = function isAuthenticated(req, res, next){
-    console.log('auth URL:'+ req.originalUrl);
-    console.log('req.isAuthenticated:'+req.isAuthenticated());
-    
+exports.auth = function isAuthenticated(req, res, next){    
 	if (req.isAuthenticated()) {
         // 認証済
-        console.log("認証済 User:"+req.user.username);
+        var username = req.user._json.preferred_username
+        console.log("認証済 User:"+username);
 		return next();
     }else {
         // 認証されていない

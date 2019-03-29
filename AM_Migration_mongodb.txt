@@ -30,6 +30,8 @@ db.attendance_states.insert({_id:5, state:'年次休暇'});
 db.attendance_states.insert({_id:6, state:'時間内外勤'});
 db.attendance_states.insert({_id:7, state:'遅刻'});
 
+db.working_times.insert({mail:ys-yoo@softwiz.jp, start_time:'09:00', end_time:'17:45'});
+
 db.employees_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'劉 勇綬', birthday:new Date("1988-12-28"), address:'東京都大田区南馬込', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
 
 

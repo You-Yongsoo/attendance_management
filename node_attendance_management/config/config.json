@@ -1,7 +1,4 @@
 {
-    "passport-azure-ad":{
-
-    },
     "database":{
         "host":"localhost",
         "port":5984,

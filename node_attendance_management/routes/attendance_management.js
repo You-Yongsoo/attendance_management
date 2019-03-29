@@ -12,6 +12,7 @@ var AttendanceState = require('../models/AttendanceState');
 // var Attendances = require('../models/Attendances');
 var db_helper = require('./database/db_helper');
 var DateChecker = require('./util/DateChecker');
+var log = require('./util/LogHelper').log;
 
 var router = express.Router();
 var calendar = new node_calendar();
@@ -48,7 +49,8 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
     var attendanceStates;
     var employeeInfo, employeePrivacy, attendances;
     var userAgent = req.headers['user-agent'].toLowerCase();
-    var userName = req.user.username;
+    //var userName = req.user.username;
+    var userName = req.user._json.preferred_username;
 
     var lastDate = new Date(presentYear, presentMonth, 0).getDate();
 
@@ -72,6 +74,8 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
             if (result.length > 0) {
                 employeeInfo = result[0];
                 console.log("Employee Info:" + employeeInfo);
+            }else{
+                return;
             }
             //社員個人情報を抽出
             EmployeePrivacy.find({ "mail": userName }).exec(function (err, result) {

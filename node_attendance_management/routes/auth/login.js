@@ -4,13 +4,16 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var passport_local = require('passport-local');
-// var passport_azure = require('passport-azure-ad');
+var passport_azure = require('passport-azure-ad');
 
 var User = require('../../models/User');
 
 //var router = express.Router();
 var app = express();
 var LocalStrategy = passport_local.Strategy;
+var BearerStrategy = passport_azure.BearerStrategy;
+const authenticatedUserTokens = [];
+
 
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -49,6 +52,31 @@ passport.use('local', new LocalStrategy(function(username, password, done){
     });
 }));
 
+//認証ミドルウェアpassportの初期化
+// var passport_options = {
+//     identityMetadata: "https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration",
+//     clientID: "54acf2c3-6bfd-4397-9e93-9a4629e3d6af",
+//     validateIssuer: false,
+//     loggingLevel: 'warn',
+//     passReqToCallback: false
+// };
+  
+// passport.use(new BearerStrategy(passport_options, 
+//     function (token, done){
+//         let currentUser = null;
+//         let userToken = authenticatedUserTokens.find(function(user){
+//             currentUser = user;
+//             user.sub === token.sub;
+//         });
+
+//         if(!userToken){
+//             authenticatedUserTokens.push(token);
+//         }
+
+//         return done(null, currentUser, token);  
+//     }
+// ));
+
 passport.serializeUser(function(user, done){
     console.log('SerializeUser:'+user);
     done(null, user);
@@ -71,16 +99,6 @@ app.get('/err', function(req, res){
     res.render('login', {title:'Login', login_result:'ログイン失敗'});
 });
 
-app.post('/callback', 
-    passport.authenticate('saml', {
-        failureRedirect:'/', 
-        failureFlash:true,
-    }),
-    function(req, res){
-        res.redirect('/employee_menu');
-    }
-);
-
 //----------------------------------------------------------
 //参照
 //https://qiita.com/tinymouse/items/fa910bf80a038c7f9ccb
@@ -94,5 +112,15 @@ app.post('/',
         res.redirect('/employee_menu');
     }
 );
+
+// app.post('/', 
+//     passport.authenticate('oauth-bearer', {
+//         failureRedirect:'/login/err',
+//         session:false
+//     }),
+//     function(req, res){
+//         res.redirect('/employee_menu');
+//     }
+// );
 
 module.exports = app;
