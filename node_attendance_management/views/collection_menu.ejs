@@ -11,17 +11,25 @@
 <script src='/javascripts/bootstrap.min.js'></script>
 <script src='/javascripts/bootstrap.js'></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
-
+<script>
+	function showEmployeeInfo(){
+		var width = 700;
+		var height = 400;
+		var leftPosition = (screen.width / 2) - (width / 2);
+		var topPosition = (screen.height / 2) - (height / 2);
+		window.open('/collection_management/employeeInfo', 'EmployeeInfo', 'width=' + width + ', height=' + height + ', top=' + topPosition + ', left=' + leftPosition);
+	}
+</script>
 </head>
 <body>
 	<div class="container">
 		<h1>メニュー</h1>
-		<ul>
-			<li><a href="">部署管理</a></li>
-			<li><a href="">職級管理</a></li>
-			<li><a href="">業務先</a></li>
-			<li><a href="">出社状況管理</li>
-			<li><a href="">社員情報管理</li>
+		<div class="list-group">
+			<a href="#" class="list-group-item">部署管理</a>
+			<a href="#" class="list-group-item">職級管理</a>
+			<a href="#" class="list-group-item">業務先</a>
+			<a href="#" class="list-group-item">出社状況管理</a>
+			<a href="#" class="list-group-item" onclick="showEmployeeInfo()">社員情報管理</a>
 		</ul>
 	</div>	
 </body>
