@@ -20,6 +20,7 @@ var db_helper = require('./routes/database/db_helper');
 var authenticate = require('./routes/auth/authenticate');
 
 //一度モデルの登録が必要
+var AttendanceTime = require('./models/AttendanceTime');
 var AttendanceState = require('./models/AttendanceState');
 var CompanyClass = require('./models/CompanyClass');
 var CompanyDepartment = require('./models/CompanyDepartment');

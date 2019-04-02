@@ -9,7 +9,7 @@ var User = require('../models/User');
 var EmployeePrivacy = require('../models/EmployeePrivacy');
 var EmployeeInfo = require('../models/EmployeeInfo');
 var AttendanceState = require('../models/AttendanceState');
-var Authority = require('../models/Authorities');
+var AttendanceTime = require('../models/AttendanceTime');
 var db_helper = require('./database/db_helper');
 var DateChecker = require('./util/DateChecker');
 var log = require('./util/LogHelper').log;
@@ -46,7 +46,7 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
         return;
     }
 
-    var attendanceStates;
+    var attendanceTime, attendanceStates;
     var employeeInfo, employeePrivacy, attendances;
     var userAgent = req.headers['user-agent'].toLowerCase();
     //var userName = req.user.username;
@@ -61,52 +61,61 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
     var attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;
     
     
-
-    AttendanceState.find({}).exec(function (err, result) {
-        if (err) throw new Error(err);
-        if (result.length > 0) {
-            attendanceStates = result;
-            for(var i = 0; i < attendanceStates.length; i++){
-                console.log(attendanceStates[i]);
-            }
+    AttendanceTime.find({"year":presentYear}).exec(function(err, result){
+        if (err){
+            log.error(err)
+            return;
         }
-        //社員基本情報を抽出
-        EmployeeInfo.find({"mail": userName }).populate('department').populate('class').populate('authority').populate('dispatch').exec(function (err, result) {
+        if(result.length > 0){
+            attendanceTime = result[0];
+        }
+        AttendanceState.find({}).exec(function (err, result) {
             if (err){
                 log.error(err)
                 return;
             }
             if (result.length > 0) {
-                employeeInfo = result[0];
-                console.log("Employee Info:" + employeeInfo);
-            }else{
-                log.info("Not exist Employee Information")
-                return;
+                attendanceStates = result;
             }
-            //社員個人情報を抽出
-            EmployeePrivacy.find({ "mail": userName }).exec(function (err, result) {
+            //社員基本情報を抽出
+            EmployeeInfo.find({"mail": userName }).populate('department').populate('class').populate('authority').populate('dispatch').exec(function (err, result) {
                 if (err){
                     log.error(err)
                     return;
                 }
                 if (result.length > 0) {
-                    employeePrivacy = result[0];
-                    log.info('Employee Privacy:' + employeePrivacy);
+                    employeeInfo = result[0];
+                    console.log("Employee Info:" + employeeInfo);
                 }else{
-                    log.info("Not exist Employee Privacy Infomation")
+                    log.info("Not exist Employee Information")
                     return;
                 }
-
-                db_helper.collection(attendances_col_name).find({ "mail": userName }).sort({ date: -1 }).toArray(function (err, result) {
-                    if (result.length > 0) {
-                        attendances = result;
-                        console.log('Attendance Size:' + attendances.length);
+                //社員個人情報を抽出
+                EmployeePrivacy.find({ "mail": userName }).exec(function (err, result) {
+                    if (err){
+                        log.error(err)
+                        return;
                     }
-                    renderView();
+                    if (result.length > 0) {
+                        employeePrivacy = result[0];
+                        log.info('Employee Privacy:' + employeePrivacy);
+                    }else{
+                        log.info("Not exist Employee Privacy Infomation")
+                        return;
+                    }
+    
+                    db_helper.collection(attendances_col_name).find({ "mail": userName }).sort({ date: -1 }).toArray(function (err, result) {
+                        if (result.length > 0) {
+                            attendances = result;
+                            console.log('Attendance Size:' + attendances.length);
+                        }
+                        renderView();
+                    });
                 });
             });
         });
     });
+    
 
     function renderView() {
         console.log("Id:" + id);
@@ -115,6 +124,7 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
         console.log('UserName:' + userName);
         res.render('attendance_management',
             {
+                attendance_time: attendanceTime,
                 attendance_states: attendanceStates,
                 employee_info: employeeInfo,
                 employee_privacy: employeePrivacy,
