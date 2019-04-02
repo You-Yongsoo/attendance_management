@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
-var schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-var state_schema = new schema({
-    _id:{type:Number, require:true, unique:true},
-    state:{type:String, require:true}
+var state_schema = new Schema({
+    id:{type:Schema.Types.ObjectId, require:true, unique:true},
+    state:{type:String, require:true},
+    state_value:{type:Number, require:true}
 }, {collection:'attendance_states'})
 
 module.exports = mongoose.model('AttendanceState', state_schema); 

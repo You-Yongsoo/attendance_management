@@ -12,17 +12,22 @@ var passport = require('passport');
 var passport_azure_ad = require('passport-azure-ad');
 var OIDCStrategy = passport_azure_ad.OIDCStrategy;
 
-// var mongoose = require('mongoose');
-
-// var index = require('./routes/index');
-// var login = require('./routes/auth/login');
-// var users = require('./routes/users');
 var employee_menu = require('./routes/employee/employee_menu');
 var attendance_management = require('./routes/attendance_management');
 var collection_management = require('./routes/collections/collection_management')
 var collection_menu = require('./routes/collection_menu');
 var db_helper = require('./routes/database/db_helper');
 var authenticate = require('./routes/auth/authenticate');
+
+//一度モデルの登録が必要
+var AttendanceState = require('./models/AttendanceState');
+var CompanyClass = require('./models/CompanyClass');
+var CompanyDepartment = require('./models/CompanyDepartment');
+var DispatchPlace = require('./models/DispatchPlace');
+var Authority = require('./models/Authorities');
+
+var EmployeePrivacy = require('./models/EmployeePrivacy');
+var EmployeeInfo = require('./models/EmployeeInfo');
 
 var config = require('./config/config');
 var config_filepath = "./config/config.json";

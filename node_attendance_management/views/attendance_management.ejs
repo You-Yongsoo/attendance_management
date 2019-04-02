@@ -158,6 +158,9 @@
 			var buttonId = $(button).attr("id");
 			var splitValue = buttonId.split('_');
 			var dateNumber = splitValue[splitValue.length-1];			
+			var autoStartTimeSplit = "<%=employee_info.dispatch.start_time%>".split(':');
+			var autoEndTimeSplit = "<%=employee_info.dispatch.end_time%>".split(':');
+
 			var startTimeId = "#start_time_" + dateNumber;
 			var endTimeId = "#end_time_" + dateNumber;
 			var stateId = "#state_"+dateNumber;
@@ -165,9 +168,10 @@
 			var breakTimeId = "#break_"+dateNumber;
 
 			var timeFormat = new DateFormat('HH:mm');
-			var timeZoneOffest = 1000 * 60 * 60 * 9;
-			var startTime = new Date(<%=year%>, <%=month%>, dateNumber, 9, 0);
-			var endTime = new Date(<%=year%>, <%=month%>, dateNumber, 18, 0);
+			var timeZoneOffest = 1000 * 60 * 60 * 9;			
+
+			var startTime = new Date(<%=year%>, <%=month%>, dateNumber, autoStartTimeSplit[0], autoStartTimeSplit[1]);
+			var endTime = new Date(<%=year%>, <%=month%>, dateNumber,  autoEndTimeSplit[0], autoEndTimeSplit[1]);
 			
 			$(startTimeId).val(timeFormat.format(startTime));
 			$(endTimeId).val(timeFormat.format(endTime));
@@ -175,6 +179,8 @@
 				var workingTime = new Date(endTime.getTime() - startTime.getTime());
 				workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
 				$(workingTimeId).text(timeFormat.format(workingTime));
+			}else{
+				$(workingTimeId).text("");
 			}
 		}
 
@@ -216,7 +222,7 @@
 </head>
 
 <body onload="initialize()">
-    <a href="/logout">Log Out</a>
+    <a href="/logout">Logout</a>
 	<div class="container">
 		<h1>勤怠管理</h1>
 		<h2>ユーザ情報</h2>
@@ -237,8 +243,8 @@
 					%>
 					<td><%=employee_privacy.name%></td>
 					<td><%=employee_privacy.mail%></td>
-					<td><%=employee_info.department_id.department_name%></td>
-					<td><%=employee_info.class_id.class_name%></td>
+					<td><%=employee_info.department.department%></td>
+					<td><%=employee_info.class.class%></td>
 					<%
 					}
 					%>
@@ -277,13 +283,13 @@
 		<h2>勤怠状況</h2>
 		<div class="text-center">
 			<h2>
-				<input id="prev_month" class="btn btn-primary" type="button" value="先月" onclick="prev_month()" />
+				<input id="prev_month" class="btn btn-primary" type="button" value="前月" onclick="prev_month()" />
 				<%=year%>年<%=month%>月
-				<input id="next_month" class="btn btn-primary" type="button" value="来月" onclick="next_month()" />
+				<input id="next_month" class="btn btn-primary" type="button" value="翌月" onclick="next_month()" />
 			</h2>
 		</div>
 		<form action="/attendance_management/<%=year%>_<%=month%>" name="attendance_form" method="POST">
-			<input id="save" name="save" class="btn" type="submit" value="保存" />
+			<input id="save" class="btn" type="submit" value="保存" />
 			<input id="all_auto_input" class="btn" type="button" value="一括入力" onclick="onClickAllAutoInput()"/>
 			<table class="table">
 				<thead>
@@ -324,8 +330,8 @@
 					var stateId = "state_"+dateNumber;
 					var messageId = "message_"+dateNumber;				
 				%>
-					<tr id="<%=recordId%>">
-						<td class="text-center" id="<%=dateId%>"><%=date.getDate()%>日</td>
+					<tr id="<%=recordId%>" name="<%=recordId%>">
+						<td class="text-center""><p id="<%=dateId%>" name="<%=dateId%>"><%=date.getDate()%>日</p></td>
 						<td class="text-center" id="<%=dayId%>">
 							<%if(date.getDay() == 0){%>
 							<p class="text-warning">
@@ -347,10 +353,10 @@
 							<%}%>
 					</td>
 					<td class="text-center">
-						<input id="<%=startTimeId%>" onblur="onBlurTimeInput(this)" type="time" />	
+						<input id="<%=startTimeId%>" name="<%=startTimeId%>" onblur="onBlurTimeInput(this)" type="time" />	
 					</td>
 					<td class="text-center">
-						<input id="<%=endTimeId%>" onblur="onBlurTimeInput(this)" type="time" />
+						<input id="<%=endTimeId%>" name="<%=endTimeId%>" onblur="onBlurTimeInput(this)" type="time" />
 					</td> 
 					<td class="text-center">
 						<button type="button" id="<%=autoInputTimeId%>" class="btn btn-primary"
@@ -361,7 +367,7 @@
 					</td>
 					<td id="<%=breakTimeId%>" class="text-center" />
 					<td class="text-center">
-						<select class="form-control" id="<%=stateId%>" name="state">
+						<select class="form-control" id="<%=stateId%>" name="<%=stateId%>">
 							<%
 							if(attendance_states != undefined){
 								for(var j = 0; j < attendance_states.length; j++){
@@ -375,7 +381,7 @@
 						</select>
 					</td>
 					<td class="text-center">
-						<input class="form-control" id="<%=messageId%>" type="text" />
+						<input class="form-control" id="<%=messageId%>" name="<%=messageId%>" type="text" />
 					</td>
 				</tr>
 					<%}%>

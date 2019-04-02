@@ -9,7 +9,7 @@ var User = require('../models/User');
 var EmployeePrivacy = require('../models/EmployeePrivacy');
 var EmployeeInfo = require('../models/EmployeeInfo');
 var AttendanceState = require('../models/AttendanceState');
-// var Attendances = require('../models/Attendances');
+var Authority = require('../models/Authorities');
 var db_helper = require('./database/db_helper');
 var DateChecker = require('./util/DateChecker');
 var log = require('./util/LogHelper').log;
@@ -60,6 +60,8 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
 
     var attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;
     
+    
+
     AttendanceState.find({}).exec(function (err, result) {
         if (err) throw new Error(err);
         if (result.length > 0) {
@@ -69,20 +71,30 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
             }
         }
         //社員基本情報を抽出
-        EmployeeInfo.find({ "mail": userName }).populate('department_id').populate('class_id').populate('dispatch_id').exec(function (err, result) {
-            if (err) throw new Error(err);
+        EmployeeInfo.find({"mail": userName }).populate('department').populate('class').populate('authority').populate('dispatch').exec(function (err, result) {
+            if (err){
+                log.error(err)
+                return;
+            }
             if (result.length > 0) {
                 employeeInfo = result[0];
                 console.log("Employee Info:" + employeeInfo);
             }else{
+                log.info("Not exist Employee Information")
                 return;
             }
             //社員個人情報を抽出
             EmployeePrivacy.find({ "mail": userName }).exec(function (err, result) {
-                if (err) throw new Error(err);
+                if (err){
+                    log.error(err)
+                    return;
+                }
                 if (result.length > 0) {
                     employeePrivacy = result[0];
-                    console.log('Employee Privacy:' + employeePrivacy);
+                    log.info('Employee Privacy:' + employeePrivacy);
+                }else{
+                    log.info("Not exist Employee Privacy Infomation")
+                    return;
                 }
 
                 db_helper.collection(attendances_col_name).find({ "mail": userName }).sort({ date: -1 }).toArray(function (err, result) {
@@ -128,6 +140,9 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
         next(err);
         return;
     }
+    
+    var attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;
+    var redirectUrl = '/attendance_management/' + presentYear + '_' + presentMonth
 
     //参考資料
     // スキーマ定義などなど
@@ -135,10 +150,11 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
     // mongoose.connect('mongodb://localhost:27017/hogetable', function(err) {});
     // article.update({id: XXX}, item, {upsert: true}, function(err) {});
 
-    var redirectUrl = '/attendance_management/' + presentYear + '_' + presentMonth
+    log.info('Attendance Management Post');
+    log.info(req.body);
 
-    console.log('Attendance Management Post');
-    console.log(req.attendance_form);
+    // db_helper.collection(attendances_col_name)
+    
     res.redirect(redirectUrl);
 });
 

@@ -1,43 +1,44 @@
 ﻿use db_attendance_management
 
-db.departments.insert({_id:1, department_name:'開発本部 システム事業部'});
-db.departments.insert({_id:2, department_name:'開発本部 システム事業部1'});
-db.departments.insert({_id:3, department_name:'開発本部 システム事業部2'});
-db.departments.insert({_id:4, department_name:'経営支援部'});
+//マスタコレクション
+db.departments.insert({_id:ObjectId('5ca1baeb8c8550f886953236'), department:'開発本部 システム事業部'});
+db.departments.insert({_id:ObjectId('5ca1baeb8c8550f886953237'), department:'開発本部 システム事業部1'});
+db.departments.insert({_id:ObjectId('5ca1baec8c8550f886953238'), department:'開発本部 システム事業部2'});
+db.departments.insert({_id:ObjectId('5ca1baec8c8550f886953239'), department:'システム事業部'});
+db.departments.insert({_id:ObjectId('5ca1baec8c8550f88695323a'), department:'経営支援部'});
 
-db.company_classes.insert({_id:1, class_name:'社員'});
-db.company_classes.insert({_id:2, class_name:'課長代理'});
-db.company_classes.insert({_id:3, class_name:'課長'});
-db.company_classes.insert({_id:4, class_name:'次長'});
-db.company_classes.insert({_id:5, class_name:'部長'});
-db.company_classes.insert({_id:6, class_name:'社長'});
+db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323b'), class:'社員'});
+db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323c'), class:'課長代理'});
+db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323d'), class:'課長'});
+db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323e'), class:'次長'});
+db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323f'), class:'部長'});
+db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f886953240'), class:'社長'});
 
-db.dispatch_places.insert({_id:1, dispatch_place:'自社開発'});
-db.dispatch_places.insert({_id:2, dispatch_place:'株式会社 フォーカスシステムズ'});
-db.dispatch_places.insert({_id:3, dispatch_place:'IBM'});
-db.dispatch_places.insert({_id:4, dispatch_place:'株式会社 日立製作所'});
+db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953241'), dispatch_place:'自社開発', start_time:'09:00', end_time:'18:00'});
+db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953242'), dispatch_place:'株式会社 フォーカスシステムズ', start_time:'09:00', end_time:'17:45'});
+db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953243'), dispatch_place:'IBM', start_time:'09:00', end_time:'18:00'});
+db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953244'), dispatch_place:'株式会社 日立製作所', start_time:'09:00', end_time:'18:00'});
 
-db.authorities.insert({_id:1, authority:'社員権限'});
-db.authorities.insert({_id:2, authority:'チームリーダ権限'});
-db.authorities.insert({_id:3, authority:'部長権限'});
-db.authorities.insert({_id:4, authority:'システム管理者権限'});
+db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953245'), authority:'社員権限', authority_value:'ROLE_EMPLOYEE'});
+db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953246'), authority:'チームリーダ権限', authority_value:'ROLE_MANAGER'});
+db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953247'), authority:'部長権限', authority_value:'ROLE_MANAGER'});
+db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953248'), authority:'システム管理者権限', authority_value:'ROLE_ADMIN'});
 
-db.attendance_states.insert({_id:1, state:'正常出社'});
-db.attendance_states.insert({_id:2, state:'早退'});
-db.attendance_states.insert({_id:3, state:'欠勤'});
-db.attendance_states.insert({_id:4, state:'月次休暇'});
-db.attendance_states.insert({_id:5, state:'年次休暇'});
-db.attendance_states.insert({_id:6, state:'時間内外勤'});
-db.attendance_states.insert({_id:7, state:'遅刻'});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f886953249'), state:'正常出社', state_value:0});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324a'), state:'早退', state_value:1});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324b'), state:'欠勤', state_value:2});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324c'), state:'月次休暇', state_value:3});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324d'), state:'年次休暇', state_value:4});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324e'), state:'時間内外勤', state_value:5});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324f'), state:'遅刻', state_value:6});
 
-db.working_times.insert({mail:ys-yoo@softwiz.jp, start_time:'09:00', end_time:'17:45'});
+db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953250'), year:2017, lunch_time:'01:00', dinner_time:'00:30'});
+db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953251'), year:2018, lunch_time:'01:00', dinner_time:'00:30'});
+db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953252'), year:2019, lunch_time:'01:00', dinner_time:'00:00'});
 
+
+//ユーザ情報コレクション
 db.employees_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'劉 勇綬', birthday:new Date("1988-12-28"), address:'東京都大田区南馬込', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
 
+db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department:'システム事業部', class:'課長代理', authority:'チームリーダ権限', dispatch:'株式会社 フォーカスシステムズ'});
 
-db.users.insert({username:'ys-yoo@softwiz.jp', password:'3tKV!g24'});
-db.users.insert({username:'admin', password:'1234'});
-
-db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department_id:1, class_id:2, authority_id:2, dispatch_id:2});
-
-db.attendances_201902.insert({mail:'ys-yoo@softwiz.jp', date:new ISODate("2019-02-01"), start_time:new ISODate("2019-02-01 09:00:00"), end_time:new ISODate("2019-02-01 17:45:00"), message:"" }, {unique:true})

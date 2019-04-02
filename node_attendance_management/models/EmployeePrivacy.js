@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var privacySchema = new Schema({
+    id:{type:Schema.Types.ObjectId, require:true, unique:true},
     mail:{type:String, require:true, unique:true},
     name:{type:String, require:true},
     birthday:{type:Date, require:true},
