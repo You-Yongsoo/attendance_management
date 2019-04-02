@@ -40,5 +40,5 @@ db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953252'), year:2019,
 //ユーザ情報コレクション
 db.employees_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'劉 勇綬', birthday:new Date("1988-12-28"), address:'東京都大田区南馬込', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
 
-db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department:'システム事業部', class:'課長代理', authority:'チームリーダ権限', dispatch:'株式会社 フォーカスシステムズ'});
+db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department:ObjectId('5ca1baec8c8550f886953239'), class:ObjectId('5ca1baec8c8550f88695323c'), authority:ObjectId('5ca1baec8c8550f886953248'), dispatch:ObjectId('5ca1baec8c8550f886953242')});
 
