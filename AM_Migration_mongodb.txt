@@ -7,6 +7,13 @@ db.departments.insert({_id:ObjectId('5ca1baec8c8550f886953238'), department:'開
 db.departments.insert({_id:ObjectId('5ca1baec8c8550f886953239'), department:'システム事業部'});
 db.departments.insert({_id:ObjectId('5ca1baec8c8550f88695323a'), department:'経営支援部'});
 
+db.departments.update({department:'開発本部 システム事業部'}, {_id:ObjectId('5ca1baeb8c8550f886953236'), department:'開発本部 システム事業部'}, {upsert:true});
+db.departments.update({department:'開発本部 システム事業部1'}, {_id:ObjectId('5ca1baeb8c8550f886953237'), department:'開発本部 システム事業部1'}, {upsert:true});
+db.departments.update({department:'開発本部 システム事業部2'}, {_id:ObjectId('5ca1baec8c8550f886953238'), department:'開発本部 システム事業部2'}, {upsert:true});
+db.departments.update({department:'システム事業部'}, {_id:ObjectId('5ca1baec8c8550f886953239'), department:'システム事業部'}, {upsert:true});
+db.departments.update({department:'経営支援部'}, {_id:ObjectId('5ca1baec8c8550f88695323a'), department:'経営支援部'}, {upsert:true});
+
+
 db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323b'), class:'社員'});
 db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323c'), class:'課長代理'});
 db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323d'), class:'課長'});
@@ -31,6 +38,8 @@ db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324c'), state:'�
 db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324d'), state:'年次休暇', state_value:4});
 db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324e'), state:'時間内外勤', state_value:5});
 db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324f'), state:'遅刻', state_value:6});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f886953250'), state:'休日', state_value:7});
+db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f886953251'), state:'祝日', state_value:8});
 
 db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953250'), year:2017, lunch_time:'01:00', dinner_time:'00:30'});
 db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953251'), year:2018, lunch_time:'01:00', dinner_time:'00:30'});

@@ -3,6 +3,7 @@ var authenticate = require('./auth/authenticate');
 var node_calendar = require('node-calendar');
 var mongoose = require('mongoose');
 var async = require('async');
+var date_utils = require('date-utils');
 
 var users = require('./database/db_users');
 var User = require('../models/User');
@@ -46,6 +47,11 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
         return;
     }
 
+    var now = new Date();
+    console.log("toLocaleString:"+now.toLocaleString());
+    console.log("LocaleDateString:"+now.toLocaleDateString());
+    console.log("LocaleTimeString:"+now.toLocaleTimeString());
+    
     var attendanceTime, attendanceStates;
     var employeeInfo, employeePrivacy, attendances;
     var userAgent = req.headers['user-agent'].toLowerCase();
@@ -104,10 +110,9 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
                         return;
                     }
     
-                    db_helper.collection(attendances_col_name).find({ "mail": userName }).sort({ date: -1 }).toArray(function (err, result) {
+                    db_helper.collection(attendances_col_name).find({ "mail": userName }).sort({ date: 1 }).toArray(function (err, result) {
                         if (result.length > 0) {
                             attendances = result;
-                            console.log('Attendance Size:' + attendances.length);
                         }
                         renderView();
                     });
@@ -160,8 +165,8 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
     // mongoose.connect('mongodb://localhost:27017/hogetable', function(err) {});
     // article.update({id: XXX}, item, {upsert: true}, function(err) {});
 
-    log.info('Attendance Management Post');
-    log.info(req.body);
+    console.log('Attendance Management Post');
+    console.log(req.body);
 
     // db_helper.collection(attendances_col_name)
     

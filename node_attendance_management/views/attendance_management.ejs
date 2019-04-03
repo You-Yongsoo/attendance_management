@@ -54,12 +54,18 @@
 			<%if (attendances != undefined) {%>
 				var attendanceList = <%- JSON.stringify(attendances);%>;
 				var timeFormat = new DateFormat('HH:mm');
-				var timeZoneOffest = 1000 * 60 * 60 * 9;
+				let minuteMilli = 1000 * 60;
+				var lunchTimeMilli = 12 * 60 * minuteMilli;
+				var dinnerTimeMilli = 18 * 60 * minuteMilli;
+				
 				for (var j = 0; j < attendanceList.length; j++) {
 					var attendance_data = attendanceList[j];
 					var date = new Date(attendance_data.date);
-					var startTime = new Date(attendance_data.start_time);
-					var endTime = new Date(attendance_data.end_time);					
+					//var startTime = new Date(attendance_data.start_time);
+					//var endTime = new Date(attendance_data.end_time);
+					var startTime = attendance_data.start_time;
+					var endTime = attendance_data.end_time;		
+					var state = attendance_data.state;			
 					var message = attendance_data.message;
 					var dateNumber = date.getDate();
 					var holidayCheckId = "#holiday_check_" + dateNumber;
@@ -73,22 +79,12 @@
 					var breakTimeId = "#break_" + dateNumber;
 					var stateId = "#state_" + dateNumber;
 					var messageId = "#message_" + dateNumber;
-					var state = attendance_data.state;
 					
-					startTime.setTime(startTime.getTime() - startTime.getTimezoneOffset() - timeZoneOffest);
-					endTime.setTime(endTime.getTime() - endTime.getTimezoneOffset() - timeZoneOffest);
+					$(startTimeId).val(startTime);
+					$(endTimeId).val(endTime);
 
-					$(startTimeId).val(timeFormat.format(startTime));
-					$(endTimeId).val(timeFormat.format(endTime));
-					if(endTime.getTime() > startTime.getTime()){
-						var workingTime = new Date(endTime.getTime() - startTime.getTime());
-						workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
-						$(workingTimeId).text(timeFormat.format(workingTime));
-					}
-
-					if(state != undefined){
-						$(stateId).val(state);
-					}
+					var startMilliTime = (Number(startTime.split(':')[0]) * 60 * minuteMilli) + (Number(startTime.split(':')[1]) * minuteMilli);						
+					var endMilliTime = (Number(endTime.split(':')[0]) * 60 * minuteMilli) + (Number(endTime.split(':')[1]) * minuteMilli);
 				}
 
 			<%}%>
@@ -110,19 +106,7 @@
 			var startTimeValue = $(startTimeId).val();
 			var endTimeValue = $(endTimeId).val();
 			if(startTimeValue != '' && endTimeValue != ''){
-				var startTime  = new Date(startTimeValue);
-				var endTime = new Date(endTimeValue);
-				console.log('StartTime:'+startTime);
-				console.log('EndTime:'+endTime);
-				if(endTime.getTime() > startTime.getTime()){
-					var workingTime = new Date(endTime.getTime() - startTime.getTime());
-					workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
-					$(workingTimeId).text(timeFormat.format(workingTime));
-					
-					if(working.getTime() >= 1000 * 60 * 60 * 8){
-						$(breakTimeId).text('01:00');		
-					}
-				}
+				
 			}else{
 				$(workingTimeId).text('');
 				$(breakTimeId).text('');
@@ -131,7 +115,6 @@
 
 		function prev_month() {
 			var prevYear, prevMonth;
-
 			if (<%= month %> == 1) {
 				prevYear = <%=year %> - 1;
 				prevMonth = 12;
@@ -157,7 +140,9 @@
 		function onClickAutoInput(button) {
 			var buttonId = $(button).attr("id");
 			var splitValue = buttonId.split('_');
-			var dateNumber = splitValue[splitValue.length-1];			
+			var dateNumber = splitValue[splitValue.length-1];
+			var autoStartTime = "<%=employee_info.dispatch.start_time%>";
+			var autoEndTime = "<%=employee_info.dispatch.end_time%>";
 			var autoStartTimeSplit = "<%=employee_info.dispatch.start_time%>".split(':');
 			var autoEndTimeSplit = "<%=employee_info.dispatch.end_time%>".split(':');
 
@@ -168,20 +153,11 @@
 			var breakTimeId = "#break_"+dateNumber;
 
 			var timeFormat = new DateFormat('HH:mm');
-			var timeZoneOffest = 1000 * 60 * 60 * 9;			
+			var timeZoneOffest = 1000 * 60 * 60 * 9;
 
-			var startTime = new Date(<%=year%>, <%=month%>, dateNumber, autoStartTimeSplit[0], autoStartTimeSplit[1]);
-			var endTime = new Date(<%=year%>, <%=month%>, dateNumber,  autoEndTimeSplit[0], autoEndTimeSplit[1]);
-			
-			$(startTimeId).val(timeFormat.format(startTime));
-			$(endTimeId).val(timeFormat.format(endTime));
-			if(endTime.getTime() > startTime.getTime()){
-				var workingTime = new Date(endTime.getTime() - startTime.getTime());
-				workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
-				$(workingTimeId).text(timeFormat.format(workingTime));
-			}else{
-				$(workingTimeId).text("");
-			}
+			$(startTimeId).val(autoStartTime);
+			$(endTimeId).val(autoEndTime);
+
 		}
 
 		function onClickAllAutoInput(){
@@ -199,22 +175,17 @@
 				var breakTimeId = "#break_"+ i;
 				
 				if($(holidayCheckId).val() == undefined){
-					
-					var startTime = new Date(<%=year%>, <%=month%>, i, 9, 0);
-					var endTime = new Date(<%=year%>, <%=month%>, i, 18, 0);
-					
-					$(startTimeId).val(timeFormat.format(startTime));
-					$(endTimeId).val(timeFormat.format(endTime));
-					if(endTime.getTime() > startTime.getTime()){
-						var workingTime = new Date(endTime.getTime() - startTime.getTime());
-						workingTime.setTime(workingTime.getTime() - workingTime.getTimezoneOffset() - timeZoneOffest);
-						$(workingTimeId).text(timeFormat.format(workingTime));
-					}
+					var autoStartTime = "<%=employee_info.dispatch.start_time%>";
+					var autoEndTime = "<%=employee_info.dispatch.end_time%>";
+
+					$(startTimeId).val(autoStartTime);
+					$(endTimeId).val(autoEndTime);
+					$(stateId).val("正常出社")
 				}else{
 					$(startTimeId).val("");
 					$(endTimeId).val("");
-					$(workingTimeId).text("");
-					
+					$(workingTimeId).text("");		
+					$(stateId).val("休日")			
 				}
 			}
 		}
