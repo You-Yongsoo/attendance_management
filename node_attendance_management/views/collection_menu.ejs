@@ -12,11 +12,28 @@
 <script src='/javascripts/bootstrap.js'></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script>
+	let window_width = 700;
+	let window_height = 400;
+	let leftPosition = (screen.width / 2) - (width / 2);
+	let topPosition = (screen.height / 2) - (height / 2);
+
+	function showDepartments(){
+
+	}
+
+	function showCompanyClasses(){
+
+	}
+
+	function showDispatchPlaces(){
+
+	}
+
+	function showAttendanceStates(){
+		
+	}
+
 	function showEmployeeInfo(){
-		var width = 700;
-		var height = 400;
-		var leftPosition = (screen.width / 2) - (width / 2);
-		var topPosition = (screen.height / 2) - (height / 2);
 		window.open('/collection_management/employeeInfo', 'EmployeeInfo', 'width=' + width + ', height=' + height + ', top=' + topPosition + ', left=' + leftPosition);
 	}
 </script>
@@ -25,11 +42,11 @@
 	<div class="container">
 		<h1>メニュー</h1>
 		<div class="list-group">
-			<a href="#" class="list-group-item">部署管理</a>
-			<a href="#" class="list-group-item">職級管理</a>
-			<a href="#" class="list-group-item">業務先</a>
-			<a href="#" class="list-group-item">出社状況管理</a>
-			<a href="#" class="list-group-item" onclick="showEmployeeInfo()">社員情報管理</a>
+			<p class="list-group-item" onclick="showDepartments()">部署管理</p>
+			<p class="list-group-item" onclick="showCompanyClasses()">職級管理</p>
+			<p class="list-group-item" onclick="showDispatchPlaces()">業務先</p>
+			<p class="list-group-item" onclick="showAttendanceStates()">出社状況管理</p>
+			<p class="list-group-item" onclick="showEmployeeInfo()">社員情報管理</a>
 		</ul>
 	</div>	
 </body>
