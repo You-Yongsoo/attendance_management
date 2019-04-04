@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>コレクション管理 - 出社状況</title>
+<!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- BootstrapのCSS読み込み -->
+<link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script src='/javascripts/bootstrap.min.js'></script>
+<script src='/javascripts/bootstrap.js'></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
+<script>
+    
+    function initialize(){
+        
+    }		
+</script>
+</head>
+<body onload="initialize()">
+    <div class="container">
+        <div class="text-right">
+            <a href="/employee_menu">メニュー</a>
+            <a href="/logout">Logout</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>氏名</th>
+                    <th>メールアカウント</th>
+                    <th>部署</th>
+                    <th>職級</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <%
+                    if(employee_info != undefined && employee_privacy != undefined){
+                    %>
+                    <td><%=employee_privacy.name%></td>
+                    <td><%=employee_privacy.mail%></td>
+                    <td><%=employee_info.department.department%></td>
+                    <td><%=employee_info.class.class%></td>
+                    <%
+                    }
+                    %>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>住所</th>
+                    <th>電話番号</th>
+                    <th>誕生日</th>
+                    <th>雇用日</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    
+                    <%
+                    if(employee_privacy != undefined){
+                    %>
+                    <td><%=employee_privacy.address%></td>
+                    <td><%=employee_privacy.phone_number%></td>
+                    <td><%=employee_privacy.birthday.toLocaleDateString()%></td>
+                    <td><%=employee_privacy.hiredate.toLocaleDateString()%></td>
+                    <%
+                    }
+                    %>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

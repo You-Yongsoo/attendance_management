@@ -82,9 +82,10 @@
 					
 					$(startTimeId).val(startTime);
 					$(endTimeId).val(endTime);
-
+					$(stateId).val(state);
 					var startMilliTime = (Number(startTime.split(':')[0]) * 60 * minuteMilli) + (Number(startTime.split(':')[1]) * minuteMilli);						
 					var endMilliTime = (Number(endTime.split(':')[0]) * 60 * minuteMilli) + (Number(endTime.split(':')[1]) * minuteMilli);
+
 				}
 
 			<%}%>
@@ -157,6 +158,7 @@
 
 			$(startTimeId).val(autoStartTime);
 			$(endTimeId).val(autoEndTime);
+			$(stateId).val("正常出社");
 
 		}
 
@@ -193,8 +195,12 @@
 </head>
 
 <body onload="initialize()">
-    <a href="/logout">Logout</a>
-	<div class="container">
+	
+    <div class="container">
+		<div class="text-right">
+			<a href="/employee_menu">メニュー</a>
+			<a href="/logout">Logout</a>
+		</div>
 		<h1>勤怠管理</h1>
 		<h2>ユーザ情報</h2>
 		<table class="table">
@@ -260,8 +266,10 @@
 			</h2>
 		</div>
 		<form action="/attendance_management/<%=year%>_<%=month%>" name="attendance_form" method="POST">
-			<input id="save" class="btn" type="submit" value="保存" />
-			<input id="all_auto_input" class="btn" type="button" value="一括入力" onclick="onClickAllAutoInput()"/>
+			<p class="text-right">
+				<input id="save" class="btn" type="submit" value="保存" />
+				<input id="all_auto_input" class="btn" type="button" value="一括入力" onclick="onClickAllAutoInput()"/>
+			</p>
 			<table class="table">
 				<thead>
 					<tr>
@@ -302,7 +310,7 @@
 					var messageId = "message_"+dateNumber;				
 				%>
 					<tr id="<%=recordId%>" name="<%=recordId%>">
-						<td class="text-center""><p id="<%=dateId%>" name="<%=dateId%>"><%=date.getDate()%>日</p></td>
+						<td class="text-center""><input type="hidden" name="<%=dateId%>" value="<%=date.toLocaleDateString()%>"/><p id="<%=dateId%>"><%=date.getDate()%>日</p></td>
 						<td class="text-center" id="<%=dayId%>">
 							<%if(date.getDay() == 0){%>
 							<p class="text-warning">

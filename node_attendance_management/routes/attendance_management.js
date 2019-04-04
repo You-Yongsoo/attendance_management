@@ -5,8 +5,6 @@ var mongoose = require('mongoose');
 var async = require('async');
 var date_utils = require('date-utils');
 
-var users = require('./database/db_users');
-var User = require('../models/User');
 var EmployeePrivacy = require('../models/EmployeePrivacy');
 var EmployeeInfo = require('../models/EmployeeInfo');
 var AttendanceState = require('../models/AttendanceState');
@@ -156,8 +154,10 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
         return;
     }
     
-    var attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;
-    var redirectUrl = '/attendance_management/' + presentYear + '_' + presentMonth
+    let userName = req.user._json.preferred_username;
+    let attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;
+    let redirectUrl = '/attendance_management/' + presentYear + '_' + presentMonth
+    let lastDate = new Date(presentYear, presentMonth, 0).getDate();
 
     //参考資料
     // スキーマ定義などなど
@@ -165,10 +165,22 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
     // mongoose.connect('mongodb://localhost:27017/hogetable', function(err) {});
     // article.update({id: XXX}, item, {upsert: true}, function(err) {});
 
-    console.log('Attendance Management Post');
-    console.log(req.body);
+    var body = req['body'];
+    for(var i = 1; i <= lastDate; i++){
+        var dateLabel = 'date_'+i;
+        var startTimeLabel = 'start_time_'+i;
+        var endTimeLabel = 'end_time_'+i;
+        var stateLabel = 'state_'+i;
+        var messageLabel = 'message_'+i;
 
-    // db_helper.collection(attendances_col_name)
+        var date = body[dateLabel];
+        var startTime = body[startTimeLabel];
+        var endTime = body[endTimeLabel];
+        var state = body[stateLabel];
+        var message = body[messageLabel];
+
+        db_helper.collection(attendances_col_name).update({mail: userName, date:date}, {mail: userName, date:date, start_time:startTime, end_time:endTime, state:state, message:message}, {upsert:true});
+    }
     
     res.redirect(redirectUrl);
 });

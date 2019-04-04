@@ -68,9 +68,4 @@ app.get('/employeeInfo', authenticate.auth, function(req, res, next) {
     });
 });
 
-
-
-
-
-
 module.exports = app;
