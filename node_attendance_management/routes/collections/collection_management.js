@@ -6,6 +6,7 @@ var AttendanceState = require('../../models/AttendanceState');
 var CompanyClass = require('../../models/CompanyClass');
 var CompanyDepartment = require('../../models/CompanyDepartment');
 var DispatchPlace = require('../../models/DispatchPlace');
+var Authorities = require('../../models/Authorities');
 
 var EmployeePrivacy = require('../../models/EmployeePrivacy');
 var EmployeeInfo = require('../../models/EmployeeInfo');
@@ -16,8 +17,7 @@ app.get('/attendanceState', authenticate.auth, function(req, res, next) {
     AttendanceState.find({}, function(err, result){
         if(result.length > 0){
             console.log(result);
-        }
-        
+        }        
         res.render('collection_management');
     }); 
 });
@@ -66,12 +66,57 @@ app.get('/employeePrivacy', authenticate.auth, function(req, res, next) {
 
 app.get('/employeeInfo', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    EmployeeInfo.find({}, function(err, result){
-        if(result.length > 0){
-            console.log(result);
+    var companyDepartments, companyClasses, authorities, dispatchPlaces;
+    var employeeInfos;
+    CompanyDepartment.find({}).exec(function(err, result){
+        if(err){
+            return;
         }
-        res.render('./collections/employeeInfo');
+        if(result.length > 0){
+            companyDepartments = result;
+        }
+        CompanyClass.find({}).exec(function(err, result){
+            if(err){
+                return;
+            }
+            if(result.length > 0){
+                classes = result;
+            }
+            Authorities.find({}).exec(function(err, result){
+                if(err){
+                    return;
+                }
+                if(result.length > 0){
+                    authorities = result;
+                }
+                DispatchPlace.find({}).exec(function(err, result){
+                    if(err){
+                        return;
+                    }
+                    if(result.length > 0){
+                        dispatchPlaces = result;
+                    }
+                    EmployeeInfo.find({}).populate('department').populate('class').populate('authority').populate('dispatch').exec(function(err, result){
+                        if(err){
+                            return;
+                        }
+                        if(result.length > 0){
+                            employeeInfos = result;
+                            console.log(employeeInfos);
+                        }
+                        res.render('./collections/employeeInfo', {
+                            departments:companyDepartments,
+                            classes:companyClasses,
+                            authorities:authorities,
+                            dispatchPlaces:dispatchPlaces,
+                            employeeInfos: employeeInfos
+                        });
+                    });
+                });
+            });
+        });
     });
+    
 });
 
 module.exports = app;

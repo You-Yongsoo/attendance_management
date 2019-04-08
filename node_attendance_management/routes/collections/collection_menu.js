@@ -1,8 +1,9 @@
 var express = require('express');
-var authenticate = require('./auth/authenticate');
+var authenticate = require('../auth/authenticate');
 var app = express();
 var router = express.Router();
 
+var log = require('../util/LogHelper').log;
 var EmployeeInfo = require('../../models/EmployeeInfo');
 
 /* GET home page. */

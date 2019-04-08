@@ -15,7 +15,7 @@ var OIDCStrategy = passport_azure_ad.OIDCStrategy;
 var employee_menu = require('./routes/employee/employee_menu');
 var attendance_management = require('./routes/attendance_management');
 var collection_management = require('./routes/collections/collection_management')
-var collection_menu = require('./routes/collection_menu');
+var collection_menu = require('./routes/collections/collection_menu');
 var db_helper = require('./routes/database/db_helper');
 var authenticate = require('./routes/auth/authenticate');
 
