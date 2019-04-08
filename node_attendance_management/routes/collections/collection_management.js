@@ -80,7 +80,7 @@ app.get('/employeeInfo', authenticate.auth, function(req, res, next) {
                 return;
             }
             if(result.length > 0){
-                classes = result;
+                companyClasses = result;
             }
             Authorities.find({}).exec(function(err, result){
                 if(err){
