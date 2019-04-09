@@ -38,32 +38,24 @@ router.get('/:id', authenticate.auth, function (req, res, next) {
 
     if (id_split.length != 2 ||
         !DateChecker.isYear(presentYear) || !DateChecker.isMonth(presentMonth)) {
-        //res.render("")
         var err = new Error('Not Found');
         err.status = 404;
         next(err);
         return;
     }
 
-    var now = new Date();
-    console.log("toLocaleString:"+now.toLocaleString());
-    console.log("LocaleDateString:"+now.toLocaleDateString());
-    console.log("LocaleTimeString:"+now.toLocaleTimeString());
+    // var now = new Date();
+    // console.log("toLocaleString:"+now.toLocaleString());
+    // console.log("LocaleDateString:"+now.toLocaleDateString());
+    // console.log("LocaleTimeString:"+now.toLocaleTimeString());
     
     var attendanceTime, attendanceStates;
     var employeeInfo, employeePrivacy, attendances;
     var userAgent = req.headers['user-agent'].toLowerCase();
     //var userName = req.user.username;
-    var userName = req.user._json.preferred_username;
-
-    var lastDate = new Date(presentYear, presentMonth, 0).getDate();
-
-    var isFindFinishedInfo = false;
-    var isFindFinishedPrivacy = false;
-    var isFindFinishedAttendances = false;
-
-    var attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;
-    
+    let userName = req.user._json.preferred_username;
+    let lastDate = new Date(presentYear, presentMonth, 0).getDate();
+    let attendances_col_name = 'attendances_' + presentYear + '' + presentMonth;    
     
     AttendanceTime.find({"year":presentYear}).exec(function(err, result){
         if (err){
@@ -159,12 +151,6 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
     let redirectUrl = '/attendance_management/' + presentYear + '_' + presentMonth
     let lastDate = new Date(presentYear, presentMonth, 0).getDate();
 
-    //参考資料
-    // スキーマ定義などなど
-    // article = mongoose.model('article', schema);
-    // mongoose.connect('mongodb://localhost:27017/hogetable', function(err) {});
-    // article.update({id: XXX}, item, {upsert: true}, function(err) {});
-
     var body = req['body'];
     for(var i = 1; i <= lastDate; i++){
         var dateLabel = 'date_'+i;
@@ -179,10 +165,15 @@ router.post('/:id', authenticate.auth, function (req, res, next) {
         var state = body[stateLabel];
         var message = body[messageLabel];
 
-        db_helper.collection(attendances_col_name).update({mail: userName, date:date}, {mail: userName, date:date, start_time:startTime, end_time:endTime, state:state, message:message}, {upsert:true});
+        db_helper.collection(attendances_col_name).update({mail: userName, date:date}, {mail: userName, date:date, start_time:startTime, end_time:endTime, state:state, message:message}, {upsert:true}, function(err, commandResult){
+            if(err){
+                res.render('./error', {message:'Error', error:err});
+                return;
+            }
+            console.log(commandResult.result);
+        });
     }
-    
-    res.redirect(redirectUrl);
+    res.redirect(redirectUrl);    
 });
 
 module.exports = router;

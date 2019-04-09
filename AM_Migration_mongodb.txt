@@ -1,53 +1,58 @@
 ﻿use db_attendance_management
 
 //マスタコレクション
-db.departments.insert({_id:ObjectId('5ca1baeb8c8550f886953236'), department:'開発本部 システム事業部'});
-db.departments.insert({_id:ObjectId('5ca1baeb8c8550f886953237'), department:'開発本部 システム事業部1'});
-db.departments.insert({_id:ObjectId('5ca1baec8c8550f886953238'), department:'開発本部 システム事業部2'});
-db.departments.insert({_id:ObjectId('5ca1baec8c8550f886953239'), department:'システム事業部'});
-db.departments.insert({_id:ObjectId('5ca1baec8c8550f88695323a'), department:'経営支援部'});
-
+//部署管理
 db.departments.update({department:'開発本部 システム事業部'}, {_id:ObjectId('5ca1baeb8c8550f886953236'), department:'開発本部 システム事業部'}, {upsert:true});
 db.departments.update({department:'開発本部 システム事業部1'}, {_id:ObjectId('5ca1baeb8c8550f886953237'), department:'開発本部 システム事業部1'}, {upsert:true});
 db.departments.update({department:'開発本部 システム事業部2'}, {_id:ObjectId('5ca1baec8c8550f886953238'), department:'開発本部 システム事業部2'}, {upsert:true});
 db.departments.update({department:'システム事業部'}, {_id:ObjectId('5ca1baec8c8550f886953239'), department:'システム事業部'}, {upsert:true});
 db.departments.update({department:'経営支援部'}, {_id:ObjectId('5ca1baec8c8550f88695323a'), department:'経営支援部'}, {upsert:true});
 
+//役職管理
+db.company_classes.update({class:'社員'}, {_id:ObjectId('5ca1baec8c8550f88695323b'), class:'社員'}, {upsert:true});
+db.company_classes.update({class:'課長代理'}, {_id:ObjectId('5ca1baec8c8550f88695323c'), class:'課長代理'}, {upsert:true});
+db.company_classes.update({class:'課長'}, {_id:ObjectId('5ca1baec8c8550f88695323d'), class:'課長'}, {upsert:true});
+db.company_classes.update({class:'次長'}, {_id:ObjectId('5ca1baec8c8550f88695323e'), class:'次長'}, {upsert:true});
+db.company_classes.update({class:'部長'}, {_id:ObjectId('5ca1baec8c8550f88695323f'), class:'部長'}, {upsert:true});
+db.company_classes.update({class:'社長'}, {_id:ObjectId('5ca1baec8c8550f886953240'), class:'社長'}, {upsert:true});
 
-db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323b'), class:'社員'});
-db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323c'), class:'課長代理'});
-db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323d'), class:'課長'});
-db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323e'), class:'次長'});
-db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f88695323f'), class:'部長'});
-db.company_classes.insert({_id:ObjectId('5ca1baec8c8550f886953240'), class:'社長'});
+//業務先管理
+db.dispatch_places.update({dispatch_place:'自社開発'}, {_id:ObjectId('5ca1baec8c8550f886953241'), dispatch_place:'自社開発', start_time:'09:00', end_time:'18:00'}, {upsert:true});
+db.dispatch_places.update({dispatch_place:'株式会社 フォーカスシステムズ'}, {_id:ObjectId('5ca1baec8c8550f886953242'), dispatch_place:'株式会社 フォーカスシステムズ', start_time:'09:00', end_time:'17:45'}, {upsert:true});
+db.dispatch_places.update({dispatch_place:'IBM'}, {_id:ObjectId('5ca1baec8c8550f886953243'), dispatch_place:'IBM', start_time:'09:00', end_time:'18:00'}, {upsert:true});
+db.dispatch_places.update({dispatch_place:'株式会社 日立製作所'}, {_id:ObjectId('5ca1baec8c8550f886953244'), dispatch_place:'株式会社 日立製作所', start_time:'09:00', end_time:'18:00'}, {upsert:true});
 
-db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953241'), dispatch_place:'自社開発', start_time:'09:00', end_time:'18:00'});
-db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953242'), dispatch_place:'株式会社 フォーカスシステムズ', start_time:'09:00', end_time:'17:45'});
-db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953243'), dispatch_place:'IBM', start_time:'09:00', end_time:'18:00'});
-db.dispatch_places.insert({_id:ObjectId('5ca1baec8c8550f886953244'), dispatch_place:'株式会社 日立製作所', start_time:'09:00', end_time:'18:00'});
 
-db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953245'), authority:'社員権限', authority_value:'ROLE_EMPLOYEE'});
-db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953246'), authority:'チームリーダ権限', authority_value:'ROLE_MANAGER'});
-db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953247'), authority:'部長権限', authority_value:'ROLE_MANAGER'});
-db.authorities.insert({_id:ObjectId('5ca1baec8c8550f886953248'), authority:'システム管理者権限', authority_value:'ROLE_ADMIN'});
+//アプリ利用権限
+db.authorities.update({authority:'社員権限'}, {_id:ObjectId('5ca1baec8c8550f886953245'), authority:'社員権限', authority_value:'ROLE_EMPLOYEE'}, {upsert:true});
+db.authorities.update({authority:'チームリーダ権限'}, {_id:ObjectId('5ca1baec8c8550f886953246'), authority:'チームリーダ権限', authority_value:'ROLE_MANAGER'}, {upsert:true});
+db.authorities.update({authority:'部長権限'}, {_id:ObjectId('5ca1baec8c8550f886953247'), authority:'部長権限', authority_value:'ROLE_MANAGER'}, {upsert:true});
+db.authorities.update({authority:'システム管理者権限'}, {_id:ObjectId('5ca1baec8c8550f886953248'), authority:'システム管理者権限', authority_value:'ROLE_ADMIN'}, {upsert:true});
 
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f886953249'), state:'正常出社', state_value:0});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324a'), state:'早退', state_value:1});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324b'), state:'欠勤', state_value:2});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324c'), state:'月次休暇', state_value:3});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324d'), state:'年次休暇', state_value:4});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324e'), state:'時間内外勤', state_value:5});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f88695324f'), state:'遅刻', state_value:6});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f886953250'), state:'休日', state_value:7});
-db.attendance_states.insert({_id:ObjectId('5ca1baec8c8550f886953251'), state:'祝日', state_value:8});
+//出社状況管理
+db.attendance_states.update({state:'正常出社'}, {_id:ObjectId('5ca1baec8c8550f886953249'), state:'正常出社', state_value:0}, {upsert:true});
+db.attendance_states.update({state:'早退'}, {_id:ObjectId('5ca1baec8c8550f88695324a'), state:'早退', state_value:1}, {upsert:true});
+db.attendance_states.update({state:'欠勤'}, {_id:ObjectId('5ca1baec8c8550f88695324b'), state:'欠勤', state_value:2}, {upsert:true});
+db.attendance_states.update({state:'月次休暇'}, {_id:ObjectId('5ca1baec8c8550f88695324c'), state:'月次休暇', state_value:3}, {upsert:true});
+db.attendance_states.update({state:'年次休暇'}, {_id:ObjectId('5ca1baec8c8550f88695324d'), state:'年次休暇', state_value:4}, {upsert:true});
+db.attendance_states.update({state:'時間内外勤'}, {_id:ObjectId('5ca1baec8c8550f88695324e'), state:'時間内外勤', state_value:5}, {upsert:true});
+db.attendance_states.update({state:'遅刻'}, {_id:ObjectId('5ca1baec8c8550f88695324f'), state:'遅刻', state_value:6}, {upsert:true});
+db.attendance_states.update({state:'休日'}, {_id:ObjectId('5ca1baec8c8550f886953250'), state:'休日', state_value:7}, {upsert:true});
+db.attendance_states.update({state:'祝日'}, {_id:ObjectId('5ca1baec8c8550f886953251'), state:'祝日', state_value:8}, {upsert:true});
 
-db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953250'), year:2017, lunch_time:'01:00', dinner_time:'00:30'});
-db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953251'), year:2018, lunch_time:'01:00', dinner_time:'00:30'});
-db.attendance_times.insert({_id:ObjectId('5ca1baec8c8550f886953252'), year:2019, lunch_time:'01:00', dinner_time:'00:00'});
-
+//各年次の休み時刻
+db.attendance_times.update({year:2015}, {_id:ObjectId('5ca1baec8c8550f88695324e'), year:2015, lunch_time:'01:00', dinner_time:'00:30'}, {upsert:true});
+db.attendance_times.update({year:2016}, {_id:ObjectId('5ca1baec8c8550f88695324f'), year:2016, lunch_time:'01:00', dinner_time:'00:30'}, {upsert:true});
+db.attendance_times.update({year:2017}, {_id:ObjectId('5ca1baec8c8550f886953250'), year:2017, lunch_time:'01:00', dinner_time:'00:30'}, {upsert:true});
+db.attendance_times.update({year:2018}, {_id:ObjectId('5ca1baec8c8550f886953251'), year:2018, lunch_time:'01:00', dinner_time:'00:30'}, {upsert:true});
+db.attendance_times.update({year:2019}, {_id:ObjectId('5ca1baec8c8550f886953252'), year:2019, lunch_time:'01:00', dinner_time:'00:00'}, {upsert:true});
 
 //ユーザ情報コレクション
-db.employees_privacy.insert({mail:'ys-yoo@softwiz.jp', name:'劉 勇綬', birthday:new Date("1988-12-28"), address:'東京都大田区南馬込', phone_number:'080-4422-6925', hiredate:new Date("2015-04-01")});
+//Testデータ1
+db.employees_privacy.update({mail:'ys-yoo@softwiz.jp'}, {mail:'ys-yoo@softwiz.jp', name:'劉 勇綬', birthday:"1988-12-28", address:'東京都大田区南馬込', phone_number:'080-4422-6925', hiredate:"2015-04-01"}, {upsert:true});
+db.employees_information.update({mail:'ys-yoo@softwiz.jp'}, {mail:'ys-yoo@softwiz.jp', department:ObjectId('5ca1baec8c8550f886953239'), class:ObjectId('5ca1baec8c8550f88695323c'), authority:ObjectId('5ca1baec8c8550f886953248'), dispatch:ObjectId('5ca1baec8c8550f886953242')}, {upsert:true});
 
-db.employees_information.insert({mail:'ys-yoo@softwiz.jp', department:ObjectId('5ca1baec8c8550f886953239'), class:ObjectId('5ca1baec8c8550f88695323c'), authority:ObjectId('5ca1baec8c8550f886953248'), dispatch:ObjectId('5ca1baec8c8550f886953242')});
+db.employees_privacy.update({mail:'hs-seo@softwiz.jp'}, {mail:'hs-seo@softwiz.jp', name:'徐 現洙', birthday:"1985-01-01", address:'東京都', phone_number:'080-xxxx-xxxx', hiredate:"2015-xx-xx"}, {upsert:true});
+
+db.employees_information.update({mail:'hs-seo@softwiz.jp'}, {mail:'hs-seo@softwiz.jp', department:ObjectId('5ca1baec8c8550f88695323a'), class:ObjectId('5ca1baec8c8550f88695323e'), authority:ObjectId('5ca1baec8c8550f886953246'), dispatch:ObjectId('5ca1baec8c8550f886953241')}, {upsert:true});
 

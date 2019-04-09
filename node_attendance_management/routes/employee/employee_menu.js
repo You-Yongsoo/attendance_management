@@ -29,13 +29,13 @@ app.get('/', authenticate.auth, function(req, res) {
     var user_authority = employeeInfo.authority.authority_value;
     log.info("権限:"+user_authority);
     if(user_authority == 'ROLE_EMPLOYEE'){
-      res.render('./employee_layout/employee_menu');
+      res.render('./menu_layout/employee_menu');
     }else if(user_authority == 'ROLE_MANAGER'){
-      res.render('./employee_layout/manager_menu');
+      res.render('./menu_layout/manager_menu');
     }else if(user_authority == 'ROLE_ADMIN'){
-      res.render('./employee_layout/admin_menu');
+      res.render('./menu_layout/admin_menu');
     }else{
-      res.render('./employee_layout/employee_menu');
+      res.render('./menu_layout/employee_menu');
     }    
   });
 });

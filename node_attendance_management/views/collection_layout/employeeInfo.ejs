@@ -47,6 +47,14 @@ $(function () {
             $('#editModalTitle').text('Add user');
             $('#addButton').show();
             $('#updateButton').hide();
+            // $('#rowIndex').val('');
+            $('#rowId').val('');
+            $('#mail').val('');
+            $('#dispatchPlaces').val('');
+            $('#departments').val('');
+            $('#classes').val('');
+            $('#authorities').val('');
+
         } else {
             $('#editModalTitle').text('Update user');
             $('#addButton').hide();
@@ -55,7 +63,7 @@ $(function () {
             $('#rowId').val(rowData.id);
             $('#mail').val(rowData.mail);
             $('#dispatchPlaces').val(rowData.dispatch);
-            $('#department').val(rowData.department);
+            $('#departments').val(rowData.department);
             $('#classes').val(rowData.class);
             $('#authorities').val(rowData.authority);
         }
@@ -65,11 +73,23 @@ $(function () {
     function saveRowData(isAdd) {
         var rowId = $('#rowId').val();
         var rowData = {
-            id: rowId ? rowId : (new Date()).getTime(),
-            name: $('#name').val(),
-            age: $('#age').val(),
-            gender: $('#gender').val()
+            id: $('#rowId').val(),
+            mail: $('#mail').val(),
+            department: $('#departments').val(),
+            class: $('#classes').val(),
+            authority: $('#authorities').val(),
+            dispatch: $('#dispatchPlaces').val()
         };
+
+        $.ajax({
+          url:'/collection_management/employeeInfo/upsert',
+          type:'POST',
+          data:rowData
+        }).done(function(data){
+          
+        }).fail(function(data){
+
+        });
         if (isAdd) {
             var dataList = userTable.bootstrapTable('getData');
             userTable.bootstrapTable('insertRow', { index: dataList.length, row: rowData });
@@ -78,11 +98,13 @@ $(function () {
             userTable.bootstrapTable('updateRow', { index: rowIndex, row: rowData });
         }
         $('#editModal').modal('hide');
+        
         $('#rowId').val('');
-        $('#rowIndex').val('');
         $('#mail').val('');
-        $('#age').val('');
-        $('#gender').val('male');
+        $('#dispatchPlaces').val('');
+        $('#departments').val('');
+        $('#classes').val('');
+        $('#authorities').val('');
     }
 
     var initDataList = [
@@ -184,7 +206,7 @@ $(function () {
               <select class="form-control" id="departments">
                 <%
                 if(departments != undefined){
-                    for(var i = 0; i < dispatchPlaces.length; i++){                           
+                    for(var i = 0; i < departments.length; i++){                           
                 %>
                 <option value="<%=departments[i].department%>"><%=departments[i].department%></option>
                 <%
