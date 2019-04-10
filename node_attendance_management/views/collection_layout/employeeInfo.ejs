@@ -33,11 +33,6 @@ $(function () {
         saveRowData(false);
     });
 
-    $('#outputButton').on('click', function () {
-        var dataList = userTable.bootstrapTable('getData');
-        log('dataList=\n' + JSON.stringify(dataList));
-    });
-
     $('#addModalButton').on('click', function () {
         displayEditModal(true);
     });
@@ -54,7 +49,6 @@ $(function () {
             $('#departments').val('');
             $('#classes').val('');
             $('#authorities').val('');
-
         } else {
             $('#editModalTitle').text('Update user');
             $('#addButton').hide();
@@ -62,10 +56,10 @@ $(function () {
             $('#rowIndex').val(rowIndex);
             $('#rowId').val(rowData.id);
             $('#mail').val(rowData.mail);
-            $('#dispatchPlaces').val(rowData.dispatch);
-            $('#departments').val(rowData.department);
-            $('#classes').val(rowData.class);
-            $('#authorities').val(rowData.authority);
+            $('#dispatchPlaces').val(rowData.dispatch_id);
+            $('#departments').val(rowData.department_id);
+            $('#classes').val(rowData.class_id);
+            $('#authorities').val(rowData.authority_id);
         }
         $('#editModal').modal('show');
     }
@@ -75,20 +69,25 @@ $(function () {
         var rowData = {
             id: $('#rowId').val(),
             mail: $('#mail').val(),
-            department: $('#departments').val(),
-            class: $('#classes').val(),
-            authority: $('#authorities').val(),
-            dispatch: $('#dispatchPlaces').val()
+            department_id:$('#departments').val(),
+            department: $('#departments option:selected').text(),
+            class_id:$('#classes').val(),
+            class: $('#classes option:selected').text(),
+            authority_id:$('#authorities').val(),
+            authority: $('#authorities option:selected').text(),
+            dispatch_id:$('#dispatchPlaces').val(),
+            dispatch: $('#dispatchPlaces option:selected').text()
         };
+        console.log(rowData);
 
         $.ajax({
           url:'/collection_management/employeeInfo/upsert',
           type:'POST',
           data:rowData
-        }).done(function(data){
-          
+        }).done(function(result){
+          console.log(result.upserted);  
         }).fail(function(data){
-
+          console.log(data);
         });
         if (isAdd) {
             var dataList = userTable.bootstrapTable('getData');
@@ -114,9 +113,13 @@ $(function () {
         {
             id: "<%=employeeInfos[i]._id%>",
             mail: "<%=employeeInfos[i].mail%>",
+            department_id:"<%=employeeInfos[i].department._id%>",
             department:"<%=employeeInfos[i].department.department%>",
+            class_id:"<%=employeeInfos[i].class._id%>",
             class:"<%=employeeInfos[i].class.class%>",
+            authority_id:"<%=employeeInfos[i].authority._id%>",
             authority:"<%=employeeInfos[i].authority.authority%>",
+            dispatch_id:"<%=employeeInfos[i].dispatch._id%>",
             dispatch:"<%=employeeInfos[i].dispatch.dispatch_place%>"
         },
         <%
@@ -154,9 +157,11 @@ $(function () {
             }
         ]
     }).on('click-row.bs.table', function (event, row, element, field) {
-        if (field !== 'state') {
-            displayEditModal(false, element.index(), row);
-        }
+        console.log(event);
+        console.log(row);
+        console.log(element);
+        console.log(field);
+        displayEditModal(false, element.index(), row);
     });
 });
 
@@ -181,25 +186,32 @@ $(function () {
     </div>
   </div>
 </div>
+<!--追加・更新のModalダイアログ -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <!--Modal ヘッダー-->
       <div class="modal-header">
+        <!--終了ボタン-->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+        <!--Modal タイトル-->
         <h3 class="modal-title" id="editModalTitle">Add user</h3>
         <input type="hidden" id="rowIndex" value="1" />
         <input type="hidden" id="rowId" value="" />
       </div>
+      <!--Modal 内容-->
       <div class="modal-body">
         <form class="form-horizontal" role="form" onsubmit="return false;">
+          <!--メールアドレス欄-->
           <div class="form-group">
             <label class="control-label col-sm-2">Mail:</label>
             <div class="col-sm-10">
               <input class="form-control" type="text" id="mail" />
             </div>
           </div>
+          <!--部署欄-->
           <div class="form-group">
             <label class="control-label col-sm-2">Department: </label>
             <div class="col-sm-10">
@@ -208,7 +220,7 @@ $(function () {
                 if(departments != undefined){
                     for(var i = 0; i < departments.length; i++){                           
                 %>
-                <option value="<%=departments[i].department%>"><%=departments[i].department%></option>
+                <option value="<%=departments[i]._id%>"><%=departments[i].department%></option>
                 <%
                     }
                 }
@@ -216,6 +228,7 @@ $(function () {
               </select>
             </div>
           </div>
+          <!--役職欄-->
           <div class="form-group">
             <label class="control-label col-sm-2">Class: </label>
             <div class="col-sm-10">
@@ -224,7 +237,7 @@ $(function () {
                 if(classes != undefined){
                     for(var i = 0; i < classes.length; i++){                           
                 %>
-                <option value="<%=classes[i].class%>"><%=classes[i].class%></option>
+                <option value="<%=classes[i]._id%>"><%=classes[i].class%></option>
                 <%
                     }
                 }
@@ -232,6 +245,7 @@ $(function () {
               </select>
             </div>
           </div>
+          <!--業務先欄-->
           <div class="form-group">
             <label class="control-label col-sm-2">Dispatch: </label>
             <div class="col-sm-10">
@@ -240,7 +254,7 @@ $(function () {
                 if(dispatchPlaces != undefined){
                     for(var i = 0; i < dispatchPlaces.length; i++){                           
                 %>
-                <option value="<%=dispatchPlaces[i].dispatch_place%>"><%=dispatchPlaces[i].dispatch_place%></option>
+                <option value="<%=dispatchPlaces[i]._id%>"><%=dispatchPlaces[i].dispatch_place%></option>
                 <%
                     }
                 }
@@ -248,6 +262,7 @@ $(function () {
               </select>
             </div>
           </div>
+          <!--権限欄-->
           <div class="form-group">
             <label class="control-label col-sm-2">Authority: </label>
             <div class="col-sm-10">
@@ -256,7 +271,7 @@ $(function () {
                 if(authorities != undefined){
                     for(var i = 0; i < authorities.length; i++){                           
                 %>
-                <option value="<%=authorities[i].authority%>"><%=authorities[i].authority%></option>
+                <option value="<%=authorities[i]._id%>"><%=authorities[i].authority%></option>
                 <%
                     }
                 }
@@ -266,6 +281,7 @@ $(function () {
           </div>
         </form>
       </div>
+      <!--ボタン配置-->
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="addButton">Add</button>
         <button type="button" class="btn btn-primary" id="updateButton">Update</button>

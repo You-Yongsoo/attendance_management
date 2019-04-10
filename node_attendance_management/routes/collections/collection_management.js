@@ -21,6 +21,7 @@ app.get('/attendanceState', authenticate.auth, function(req, res, next) {
         }
         if(result.length > 0){
             attendanceStates = result;
+            console.log(attendanceStates);
         }
         res.render('./collection_layout/attendanceState', {
             attendanceStates:attendanceStates
@@ -37,6 +38,7 @@ app.get('/companyClass', authenticate.auth, function(req, res, next) {
         }
         if(result.length > 0){
             companyClasses = result;
+            console.log(companyClasses);
         }
         res.render('./collection_layout/companyClass', {
             companyClasses:companyClasses
@@ -71,6 +73,7 @@ app.get('/companyDepartment', authenticate.auth, function(req, res, next) {
         }
         if(result.length > 0){
             companyDepartments = result;
+            console.log(companyDepartments);
         }
         res.render('./collection_layout/companyDepartment', {
             companyDepartments:companyDepartments
@@ -83,6 +86,7 @@ app.post('/companyDepartment/upsert', authenticate.auth, function(req, res, next
     CompanyDepartment.find({}).exec(function(err, result){
         if(result.length > 0){
             console.log(result);
+
         }
     });
 });
@@ -105,6 +109,7 @@ app.get('/dispatchPlace', authenticate.auth, function(req, res, next) {
         }
         if(result.length > 0){
             dispatchPlaces = result;
+            console.log(dispatchPlaces);
         }
         res.render('./collection_layout/dispatchPlace', {
             dispatchPlaces:dispatchPlaces
@@ -226,6 +231,14 @@ app.post('/employeeInfo/upsert', authenticate.auth, function(req, res, next) {
     var employeeInfos;
     console.log('Employee Info Upsert Post');
     console.log(req.body);
+    var body = req.body;
+    EmployeeInfo.update({mail:body['mail']}, {mail:body['mail'], department:body['department_id'], class:body['class_id'], authority:body['authority_id'], dispatch:body['dispatch_id']}, {upsert:true}).exec(function(err, result){
+        if(err){
+            
+        }else{
+            res.send(result);
+        }
+    });
 });
 
 app.delete('/employeeInfo/upsert', authenticate.auth, function(req, res, next) {

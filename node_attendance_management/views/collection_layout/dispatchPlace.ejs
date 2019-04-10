@@ -15,7 +15,51 @@
 <script src='/javascripts/bootstrap-table-ja-JP.js'></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script>
-	
+$(function(){
+  var userTable = $('#userTable');
+
+  var initDataList = [
+      <%
+          for(var i = 0; i < dispatchPlaces.length; i++){      
+      %>
+      {
+          id: "<%=dispatchPlaces[i]._id%>",
+          dispatch_place: "<%=dispatchPlaces[i].dispatch_place%>",
+          start_time: "<%=dispatchPlaces[i].start_time%>",
+          end_time: "<%=dispatchPlaces[i].end_time%>",
+      },
+      <%
+      }
+      %>
+  ]
+  userTable.bootstrapTable({
+      toolbar: '#toolbar',
+      data: initDataList,
+      columns: [
+          {
+              field: 'selected',
+              checkbox: true,
+              align: 'center'
+          },
+          {
+              field: 'dispatch_place',
+              title: 'Dispatch Place'
+          },
+          {
+              field: 'start_time',
+              title: 'Start Time'
+          },
+          {
+              field: 'end_time',
+              title: 'End Time'
+          }
+      ]
+  }).on('click-row.bs.table', function (event, row, element, field) {
+      if (field !== 'state') {
+          displayEditModal(false, element.index(), row);
+      }
+  });
+});
 </script>
 </head>
 <body>
@@ -37,17 +81,22 @@
     </div>
   </div>
 </div>
+<!--追加・更新のModalダイアログ -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <!--Modal ヘッダー-->
       <div class="modal-header">
+        <!--終了ボタン-->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+        <!--Modal タイトル-->
         <h3 class="modal-title" id="editModalTitle">Title</h3>
         <input type="hidden" id="rowIndex" value="1" />
         <input type="hidden" id="rowId" value="" />
       </div>
+      <!--Modal 内容-->
       <div class="modal-body">
         <form class="form-horizontal" role="form" onsubmit="return false;">
           <div class="form-group">
@@ -60,6 +109,7 @@
           </div>
         </form>
       </div>
+      <!--ボタン配置-->
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="addButton">Add</button>
         <button type="button" class="btn btn-primary" id="updateButton">Update</button>

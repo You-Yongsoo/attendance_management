@@ -53,6 +53,5 @@ db.employees_privacy.update({mail:'ys-yoo@softwiz.jp'}, {mail:'ys-yoo@softwiz.jp
 db.employees_information.update({mail:'ys-yoo@softwiz.jp'}, {mail:'ys-yoo@softwiz.jp', department:ObjectId('5ca1baec8c8550f886953239'), class:ObjectId('5ca1baec8c8550f88695323c'), authority:ObjectId('5ca1baec8c8550f886953248'), dispatch:ObjectId('5ca1baec8c8550f886953242')}, {upsert:true});
 
 db.employees_privacy.update({mail:'hs-seo@softwiz.jp'}, {mail:'hs-seo@softwiz.jp', name:'徐 現洙', birthday:"1985-01-01", address:'東京都', phone_number:'080-xxxx-xxxx', hiredate:"2015-xx-xx"}, {upsert:true});
-
 db.employees_information.update({mail:'hs-seo@softwiz.jp'}, {mail:'hs-seo@softwiz.jp', department:ObjectId('5ca1baec8c8550f88695323a'), class:ObjectId('5ca1baec8c8550f88695323e'), authority:ObjectId('5ca1baec8c8550f886953246'), dispatch:ObjectId('5ca1baec8c8550f886953241')}, {upsert:true});
 
