@@ -229,8 +229,8 @@ app.post('/employeeInfo/upsert', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var companyDepartments, companyClasses, authorities, dispatchPlaces;
     var employeeInfos;
-    console.log('Employee Info Upsert Post');
-    console.log(req.body);
+    // console.log('Employee Info Upsert Post');
+    // console.log(req.body);
     var body = req.body;
     EmployeeInfo.update({mail:body['mail']}, {mail:body['mail'], department:body['department_id'], class:body['class_id'], authority:body['authority_id'], dispatch:body['dispatch_id']}, {upsert:true}).exec(function(err, result){
         if(err){
@@ -241,13 +241,16 @@ app.post('/employeeInfo/upsert', authenticate.auth, function(req, res, next) {
     });
 });
 
-app.delete('/employeeInfo/upsert', authenticate.auth, function(req, res, next) {
+app.post('/employeeInfo/delete', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var companyDepartments, companyClasses, authorities, dispatchPlaces;
     var employeeInfos;
 
-    console.log('Employee Info Delete Post');
-    console.log(req.body);
+    var body = req.body;
+    
+    EmployeeInfo.remove({_id:ObjectId(body['id']), mail:body['mail']}).exec(function(err, result){
+        console.log(result);
+    });
 });
 
 module.exports = app;

@@ -5,166 +5,194 @@
 <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- BootstrapのCSS読み込み -->
-<link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
+
+<link rel='stylesheet' type="text/css" href='/stylesheets/bootstrap.min.css'/>
+<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-theme.min.css" />  
+<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-table.min.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src='/javascripts/bootstrap.min.js'></script>
-<script src='/javascripts/bootstrap.js'></script>
 <script src='/javascripts/bootstrap-table.js'></script>
 <script src='/javascripts/bootstrap-table-ja-JP.js'></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script>
-$(function () {
-    var userTable = $('#userTable');
+  $(function () {
+      var collectionTable = $('#collectionTable');
 
-    $('#deleteButton').on('click', function () {
-        var idList = $.map(userTable.bootstrapTable('getSelections'), function (row) {
-            return row.id;
-        });
-        userTable.bootstrapTable('remove', { field: 'id', values: idList });
-    });
-
-    $('#addButton').on('click', function () {
-        saveRowData(true);
-    });
-
-    $('#updateButton').on('click', function () {
-        saveRowData(false);
-    });
-
-    $('#addModalButton').on('click', function () {
-        displayEditModal(true);
-    });
-
-    function displayEditModal(isAdd, rowIndex, rowData) {
-        if (isAdd) {
-            $('#editModalTitle').text('Add user');
-            $('#addButton').show();
-            $('#updateButton').hide();
-            // $('#rowIndex').val('');
-            $('#rowId').val('');
-            $('#mail').val('');
-            $('#dispatchPlaces').val('');
-            $('#departments').val('');
-            $('#classes').val('');
-            $('#authorities').val('');
-        } else {
-            $('#editModalTitle').text('Update user');
-            $('#addButton').hide();
-            $('#updateButton').show();
-            $('#rowIndex').val(rowIndex);
-            $('#rowId').val(rowData.id);
-            $('#mail').val(rowData.mail);
-            $('#dispatchPlaces').val(rowData.dispatch_id);
-            $('#departments').val(rowData.department_id);
-            $('#classes').val(rowData.class_id);
-            $('#authorities').val(rowData.authority_id);
-        }
-        $('#editModal').modal('show');
-    }
-
-    function saveRowData(isAdd) {
-        var rowId = $('#rowId').val();
-        var rowData = {
-            id: $('#rowId').val(),
-            mail: $('#mail').val(),
-            department_id:$('#departments').val(),
-            department: $('#departments option:selected').text(),
-            class_id:$('#classes').val(),
-            class: $('#classes option:selected').text(),
-            authority_id:$('#authorities').val(),
-            authority: $('#authorities option:selected').text(),
-            dispatch_id:$('#dispatchPlaces').val(),
-            dispatch: $('#dispatchPlaces option:selected').text()
-        };
-        console.log(rowData);
-
-        $.ajax({
-          url:'/collection_management/employeeInfo/upsert',
-          type:'POST',
-          data:rowData
-        }).done(function(result){
-          console.log(result.upserted);  
-        }).fail(function(data){
-          console.log(data);
-        });
-        if (isAdd) {
-            var dataList = userTable.bootstrapTable('getData');
-            userTable.bootstrapTable('insertRow', { index: dataList.length, row: rowData });
-        } else {
-            var rowIndex = $('#rowIndex').val();
-            userTable.bootstrapTable('updateRow', { index: rowIndex, row: rowData });
-        }
-        $('#editModal').modal('hide');
-        
-        $('#rowId').val('');
-        $('#mail').val('');
-        $('#dispatchPlaces').val('');
-        $('#departments').val('');
-        $('#classes').val('');
-        $('#authorities').val('');
-    }
-
-    var initDataList = [
-        <%
-            for(var i = 0; i < employeeInfos.length; i++){      
-        %>
-        {
-            id: "<%=employeeInfos[i]._id%>",
-            mail: "<%=employeeInfos[i].mail%>",
-            department_id:"<%=employeeInfos[i].department._id%>",
-            department:"<%=employeeInfos[i].department.department%>",
-            class_id:"<%=employeeInfos[i].class._id%>",
-            class:"<%=employeeInfos[i].class.class%>",
-            authority_id:"<%=employeeInfos[i].authority._id%>",
-            authority:"<%=employeeInfos[i].authority.authority%>",
-            dispatch_id:"<%=employeeInfos[i].dispatch._id%>",
-            dispatch:"<%=employeeInfos[i].dispatch.dispatch_place%>"
-        },
-        <%
-        }
-        %>
-    ]
-    userTable.bootstrapTable({
-        toolbar: '#toolbar',
-        data: initDataList,
-        columns: [
-            {
-                field: 'selected',
-                checkbox: true,
-                align: 'center'
-            },
-            {
-                field: 'mail',
-                title: 'Mail'
-            },
-            {
-                field: 'department',
-                title: 'Department'
-            },
-            {
-                field: 'class',
-                title: 'Class'
-            },
-            {
-                field: 'authority',
-                title: 'Authority'
-            },
-            {
-                field: 'dispatch',
-                title: 'Dispatch'
+      $('#deleteButton').on('click', function () {
+          var idList = $.map(collectionTable.bootstrapTable('getSelections'), function (row) {
+              return row.id;
+          });
+          console.log(idList);
+          /*
+          $.ajax({
+            url:'/collection_management/employeeInfo/delete',
+            type:'POST',
+            data:idList
+          }).done(function(result){
+            if(result.upserted != undefined){
+              let id = result.upserted[0]._id;
+              rowData.id = id;
             }
-        ]
-    }).on('click-row.bs.table', function (event, row, element, field) {
-        console.log(event);
-        console.log(row);
-        console.log(element);
-        console.log(field);
-        displayEditModal(false, element.index(), row);
-    });
-});
 
+            if (isAdd) {
+              var dataList = collectionTable.bootstrapTable('getData');
+              collectionTable.bootstrapTable('insertRow', { index: dataList.length, row: rowData });
+            } else {
+              var rowIndex = $('#rowIndex').val();
+              collectionTable.bootstrapTable('updateRow', { index: rowIndex, row: rowData });
+            }
+            console.log("Ajax Done");
+            console.log(rowData);
+          }).fail(function(data){
+            console.log(data);
+            console.log("ajax fail");
+          });
+          */
+          collectionTable.bootstrapTable('remove', { field: 'id', values: idList });
+      });
+
+      $('#addButton').on('click', function () {
+          saveRowData(true);
+      });
+
+      $('#updateButton').on('click', function () {
+          saveRowData(false);
+      });
+
+      $('#addModalButton').on('click', function () {
+          displayEditModal(true);
+      });
+
+      function displayEditModal(isAdd, rowIndex, rowData) {
+          if (isAdd) {
+              $('#editModalTitle').text('Add user');
+              $('#addButton').show();
+              $('#updateButton').hide();
+              // $('#rowIndex').val('');
+              $('#rowId').val('');
+              $('#mail').val('');
+              $('#dispatchPlaces').val('');
+              $('#departments').val('');
+              $('#classes').val('');
+              $('#authorities').val('');
+          } else {
+              $('#editModalTitle').text('Update user');
+              $('#addButton').hide();
+              $('#updateButton').show();
+              $('#rowIndex').val(rowIndex);
+              $('#rowId').val(rowData.id);
+              $('#mail').val(rowData.mail);
+              $('#dispatchPlaces').val(rowData.dispatch_id);
+              $('#departments').val(rowData.department_id);
+              $('#classes').val(rowData.class_id);
+              $('#authorities').val(rowData.authority_id);
+          }
+          $('#editModal').modal('show');
+      }
+
+      function saveRowData(isAdd) {
+          var rowId = $('#rowId').val();
+          var rowData = {
+              id: $('#rowId').val(),
+              mail: $('#mail').val(),
+              department_id:$('#departments').val(),
+              department: $('#departments option:selected').text(),
+              class_id:$('#classes').val(),
+              class: $('#classes option:selected').text(),
+              authority_id:$('#authorities').val(),
+              authority: $('#authorities option:selected').text(),
+              dispatch_id:$('#dispatchPlaces').val(),
+              dispatch: $('#dispatchPlaces option:selected').text()
+          };
+
+          $.ajax({
+            url:'/collection_management/employeeInfo/upsert',
+            type:'POST',
+            data:rowData
+          }).done(function(result){
+            if(result.upserted != undefined){
+              let id = result.upserted[0]._id;
+              rowData.id = id;
+            }
+
+            if (isAdd) {
+              var dataList = collectionTable.bootstrapTable('getData');
+              collectionTable.bootstrapTable('insertRow', { index: dataList.length, row: rowData });
+            } else {
+              var rowIndex = $('#rowIndex').val();
+              collectionTable.bootstrapTable('updateRow', { index: rowIndex, row: rowData });
+            }
+            console.log("Ajax Done");
+            console.log(rowData);
+          }).fail(function(data){
+            console.log(data);
+            console.log("ajax fail");
+          });
+
+          $('#editModal').modal('hide');
+          
+          $('#rowId').val('');
+          $('#mail').val('');
+          $('#dispatchPlaces').val('');
+          $('#departments').val('');
+          $('#classes').val('');
+          $('#authorities').val('');
+      }
+
+      var initDataList = [
+          <%
+              for(var i = 0; i < employeeInfos.length; i++){      
+          %>
+          {
+              id: "<%=employeeInfos[i]._id%>",
+              mail: "<%=employeeInfos[i].mail%>",
+              department_id:"<%=employeeInfos[i].department._id%>",
+              department:"<%=employeeInfos[i].department.department%>",
+              class_id:"<%=employeeInfos[i].class._id%>",
+              class:"<%=employeeInfos[i].class.class%>",
+              authority_id:"<%=employeeInfos[i].authority._id%>",
+              authority:"<%=employeeInfos[i].authority.authority%>",
+              dispatch_id:"<%=employeeInfos[i].dispatch._id%>",
+              dispatch:"<%=employeeInfos[i].dispatch.dispatch_place%>"
+          },
+          <%
+          }
+          %>
+      ]
+      collectionTable.bootstrapTable({
+          toolbar: '#toolbar',
+          data: initDataList,
+          columns: [
+              {
+                  field: 'selected',
+                  checkbox: true,
+                  align: 'center'
+              },
+              {
+                  field: 'mail',
+                  title: 'Mail'
+              },
+              {
+                  field: 'department',
+                  title: 'Department'
+              },
+              {
+                  field: 'class',
+                  title: 'Class'
+              },
+              {
+                  field: 'authority',
+                  title: 'Authority'
+              },
+              {
+                  field: 'dispatch',
+                  title: 'Dispatch'
+              }
+          ]
+      }).on('click-row.bs.table', function (event, row, element, field) {
+          displayEditModal(false, element.index(), row);
+      });
+  });
 </script>
 </head>
 <body>
@@ -179,7 +207,7 @@ $(function () {
               <input class="btn btn-default" type="button" id="deleteButton" value="削除" />
               <input class="btn btn-default" type="button" id="addModalButton" value="追加" />
             </div>
-          <table id="userTable"/>
+          <table id="collectionTable"/>
           </div>
         </div>
       </form>
@@ -208,7 +236,7 @@ $(function () {
           <div class="form-group">
             <label class="control-label col-sm-2">Mail:</label>
             <div class="col-sm-10">
-              <input class="form-control" type="text" id="mail" />
+              <input class="form-control" type="mail" id="mail" />
             </div>
           </div>
           <!--部署欄-->

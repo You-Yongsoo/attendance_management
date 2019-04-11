@@ -20,37 +20,7 @@
 
 		});
 
-		function initialize() {
-			/*
-			state				//出社状況のリスト
-			employee_info		//社員情報
-				department_id
-					department_name
-				class_id
-					class_name
-				dispatch_id
-					dispatch_place
-			employee_privacy 	//社員個人情報
-				mail
-				name
-				birthday
-				address
-				phone_number
-				hiredate
-			attendances 		//当月の勤怠情報
-				mail
-				date
-				start_time
-				end_time
-				message
-			year 				//年
-			month 				//月
-			last_date			//最終日
-			*/
-
-			//var year = <%-year%>;
-			//var month = <%-month%>;
-			
+		function initialize() {			
 			<%if (attendances != undefined) {%>
 				var attendanceList = <%- JSON.stringify(attendances);%>;
 				var timeFormat = new DateFormat('HH:mm');
@@ -61,8 +31,6 @@
 				for (var j = 0; j < attendanceList.length; j++) {
 					var attendance_data = attendanceList[j];
 					var date = new Date(attendance_data.date);
-					//var startTime = new Date(attendance_data.start_time);
-					//var endTime = new Date(attendance_data.end_time);
 					var startTime = attendance_data.start_time;
 					var endTime = attendance_data.end_time;		
 					var state = attendance_data.state;			

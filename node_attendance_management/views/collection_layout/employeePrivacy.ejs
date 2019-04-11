@@ -5,18 +5,18 @@
 <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- BootstrapのCSS読み込み -->
-<link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
+
+<link rel='stylesheet' type="text/css" href='/stylesheets/bootstrap.min.css'/>
+<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-theme.min.css" />  
+<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-table.min.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src='/javascripts/bootstrap.min.js'></script>
-<script src='/javascripts/bootstrap.js'></script>
 <script src='/javascripts/bootstrap-table.js'></script>
 <script src='/javascripts/bootstrap-table-ja-JP.js'></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script>
 $(function(){
-    var userTable = $('#userTable');
+    var collectionTable = $('#collectionTable');
 
     var initDataList = [
         <%
@@ -35,7 +35,7 @@ $(function(){
         }
         %>
     ]
-    userTable.bootstrapTable({
+    collectionTable.bootstrapTable({
         toolbar: '#toolbar',
         data: initDataList,
         columns: [
@@ -90,7 +90,7 @@ $(function(){
               <input class="btn btn-default" type="button" id="deleteButton" value="削除" />
               <input class="btn btn-default" type="button" id="addModalButton" value="追加" />
             </div>
-          <table id="userTable"/>
+          <table id="collectionTable"/>
           </div>
         </div>
       </form>
