@@ -22,32 +22,22 @@
           var idList = $.map(collectionTable.bootstrapTable('getSelections'), function (row) {
               return row.id;
           });
+
+          var rowList = $.map(collectionTable.bootstrapTable('getSelections'), function (row) {
+              return row;
+          });
           console.log(idList);
-          /*
+          console.log(rowList);
           $.ajax({
             url:'/collection_management/employeeInfo/delete',
             type:'POST',
-            data:idList
+            data:rowList
           }).done(function(result){
-            if(result.upserted != undefined){
-              let id = result.upserted[0]._id;
-              rowData.id = id;
-            }
-
-            if (isAdd) {
-              var dataList = collectionTable.bootstrapTable('getData');
-              collectionTable.bootstrapTable('insertRow', { index: dataList.length, row: rowData });
-            } else {
-              var rowIndex = $('#rowIndex').val();
-              collectionTable.bootstrapTable('updateRow', { index: rowIndex, row: rowData });
-            }
-            console.log("Ajax Done");
-            console.log(rowData);
+            console.log(result);
           }).fail(function(data){
+            console.log("Ajax fail");
             console.log(data);
-            console.log("ajax fail");
           });
-          */
           collectionTable.bootstrapTable('remove', { field: 'id', values: idList });
       });
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<head>
+	<title>勤怠管理ページ</title>
+	<!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- BootstrapのCSS読み込み -->
+	<link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src='/javascripts/bootstrap.min.js'></script>
+	<script src='/javascripts/bootstrap.js'></script>
+	<script src='/javascripts/dateformat.js'></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
+	<script>
+		//jQuery Initialize
+		//$(document).ready(function(){
+		$(function () {
+
+		});
+
+		function initialize() {			
+			
+		}
+		
+		function prev_month() {
+			var prevYear, prevMonth;
+			if (<%= month %> == 1) {
+				prevYear = <%=year %> - 1;
+				prevMonth = 12;
+			}else {
+				prevYear = <%=year %>;
+				prevMonth = ('00' + (<%= month %> - 1)).slice(-2);
+			}
+			location.href = "/transport_management/" + prevYear + "_" + prevMonth;
+		}
+
+		function next_month() {
+			var nextYear, nextMonth;
+			if (<%= month %> == 12) {
+				nextYear = <%=year %> + 1;
+				nextMonth = ('00' + 1).slice(-2);
+			}else {
+				nextYear = <%=year %>;
+				nextMonth = ('00' + (<%= month %> + 1)).slice(-2);
+			}
+			location.href = "/transport_management/" + nextYear + "_" + nextMonth;
+		}
+	</script>
+</head>
+
+<body onload="initialize()">
+	
+</body>
+</html>

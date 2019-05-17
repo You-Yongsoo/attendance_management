@@ -45,12 +45,14 @@
 					var autoInputTimeId = "#auto_input_" + dateNumber;
 					var workingTimeId = "#working_" + dateNumber;
 					var breakTimeId = "#break_" + dateNumber;
+					var actualWorkingTimeId = "#actual_working_" + dateNumber;
 					var stateId = "#state_" + dateNumber;
 					var messageId = "#message_" + dateNumber;
 					
 					$(startTimeId).val(startTime);
 					$(endTimeId).val(endTime);
 					$(stateId).val(state);
+					$(messageId).val(attendance_data.message);
 					
 					var startMilliTime = (Number(startTime.split(':')[0]) * 60 * minuteMilli) + (Number(startTime.split(':')[1]) * minuteMilli);						
 					var endMilliTime = (Number(endTime.split(':')[0]) * 60 * minuteMilli) + (Number(endTime.split(':')[1]) * minuteMilli);
@@ -69,6 +71,7 @@
 			var endTimeId = "#end_time_" + dateNumber;
 			var workingTimeId = "#working_"+dateNumber;
 			var breakTimeId = "#break_"+dateNumber;
+			var actualWorkingTimeId = "#actual_working_" + dateNumber;
 			var stateId = "#state_"+dateNumber;
 
 			var timeFormat = new DateFormat('HH:mm');
@@ -78,8 +81,9 @@
 			if(startTimeValue != '' && endTimeValue != ''){
 				
 			}else{
-				$(workingTimeId).text('');
-				$(breakTimeId).text('');
+				$(workingTimeId).text("");
+				$(breakTimeId).text("");
+				$(actualWorkingTimeId).text("");		
 			}
 		}
 
@@ -121,6 +125,7 @@
 			var stateId = "#state_"+dateNumber;
 			var workingTimeId = "#working_"+dateNumber;
 			var breakTimeId = "#break_"+dateNumber;
+			var actualWorkingTimeId = "#actual_working_" + dateNumber;
 
 			var timeFormat = new DateFormat('HH:mm');
 			var timeZoneOffest = 1000 * 60 * 60 * 9;
@@ -128,7 +133,6 @@
 			$(startTimeId).val(autoStartTime);
 			$(endTimeId).val(autoEndTime);
 			$(stateId).val("正常出社");
-
 		}
 
 		function onClickAllAutoInput(){
@@ -144,6 +148,7 @@
 				var stateId = "#state_" + i;
 				var workingTimeId = "#working_"+ i;
 				var breakTimeId = "#break_"+ i;
+				var actualWorkingTimeId = "#actual_working_" + dateNumber;
 				
 				if($(holidayCheckId).val() == undefined){
 					var autoStartTime = "<%=employee_info.dispatch.start_time%>";
@@ -155,7 +160,9 @@
 				}else{
 					$(startTimeId).val("");
 					$(endTimeId).val("");
-					$(workingTimeId).text("");		
+					$(workingTimeId).text("");
+					$(breakTimeId).text("");
+					$(actualWorkingTimeId).text("");		
 					$(stateId).val("休日")			
 				}
 			}
@@ -248,8 +255,9 @@
 						<th class="text-center">開始時刻</th>
 						<th class="text-center">終了時刻</th>
 						<th class="text-center">時刻自動入力</th>
-						<th class="text-center">稼動時間</th>
+						<th class="text-center">就業時間</th>
 						<th class="text-center">休憩時間</th>
+						<th class="text-center">実働時間</th>
 						<th class="text-center">出社状況</th>
 						<th class="text-center">コメント</th>
 					</tr>
@@ -275,6 +283,7 @@
 					var autoInputTimeId = "auto_input_"+dateNumber;
 					var workingTimeId = "working_"+dateNumber;
 					var breakTimeId = "break_"+dateNumber;
+					var actualWorkingTimeId = "actual_working_"+dateNumber;
 					var stateId = "state_"+dateNumber;
 					var messageId = "message_"+dateNumber;				
 				%>
@@ -314,6 +323,7 @@
 						<p id="<%=workingTimeId%>"></p>
 					</td>
 					<td id="<%=breakTimeId%>" class="text-center" />
+					<td id="<%=actualWorkingTimeId%>" class="text-center" />
 					<td class="text-center">
 						<select class="form-control" id="<%=stateId%>" name="<%=stateId%>">
 							<%

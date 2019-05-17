@@ -11,7 +11,16 @@
 <script src='/javascripts/bootstrap.min.js'></script>
 <script src='/javascripts/bootstrap.js'></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
-
+<script>
+	let window_width = 1110;
+	let window_height = 600;
+	let leftPosition = (screen.width / 2) - 200;
+	let topPosition = (screen.height / 2) - 200;
+	
+	function showTransportManagement(){
+		window.open('/transport_management/', 'TransportManagement', 'width=' + window_width + ', height=' + window_height + ', top=' + topPosition + ', left=' + leftPosition);
+	}
+</script>
 </head>
 <body>
 	<div class="container">
@@ -19,7 +28,7 @@
 		<div class="list-group">
 			<a href="/attendance_management" class="list-group-item">勤怠管理</a>
 			<a href="" class="list-group-item">社員勤怠管理</a>
-			<a href="" class="list-group-item">交通費請求</a>
+			<button class="list-group-item" onclick="showTransportManagement()">交通費請求</button>
 			<a href="/collection_menu" class="list-group-item">コレクション管理</a>
 			<a href="" class="list-group-item">設定</a>
 		</div>

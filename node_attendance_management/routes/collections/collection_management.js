@@ -1,4 +1,5 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var authenticate = require('../auth/authenticate');
 var app = express();
 
@@ -11,7 +12,7 @@ var Authorities = require('../../models/Authorities');
 var EmployeePrivacy = require('../../models/EmployeePrivacy');
 var EmployeeInfo = require('../../models/EmployeeInfo');
 
-/* GET home page. */
+//Attendance States
 app.get('/attendanceState', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var attendanceStates;
@@ -29,6 +30,29 @@ app.get('/attendanceState', authenticate.auth, function(req, res, next) {
     }); 
 });
 
+app.post('/attendanceState/upsert', authenticate.auth, function(req, res, next) {
+    var userName = req.user._json.preferred_username;
+    var body = req.body;
+    console.log(body['id']);
+
+    if(body['id'] == undefined || body['id'] == ''){
+        
+    }else{
+
+    }    
+});
+
+app.post('/attendanceState/delete', authenticate.auth, function(req, res, next) {
+    var userName = req.user._json.preferred_username;
+    var body = req.body;
+    console.log(body['id']);
+
+    AttendanceState.remove({_id:body['id']}).exec(function(err, result){
+        res.send(result);
+    });
+});
+
+//Company Class
 app.get('/companyClass', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var companyClasses;
@@ -48,22 +72,24 @@ app.get('/companyClass', authenticate.auth, function(req, res, next) {
 
 app.post('/companyClass/upsert', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    CompanyClass.find({}).exec(function(err, result){
-        if(result.length > 0){
-            console.log(result);
-        }
-    });    
+    var body = req.body;
+    console.log(body['id']);
+    
+    if(body['id'] == undefined || body['id'] == ''){
+        
+    }else{
+
+    }    
 });
 
 app.post('/companyClass/delete', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    CompanyClass.find({}).exec(function(err, result){
-        if(result.length > 0){
-            console.log(result);
-        }
+    CompanyClass.remove({_id:body['id']}).exec(function(err, result){
+        res.send(result);
     });    
 });
 
+//Company Department
 app.get('/companyDepartment', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var companyDepartments;
@@ -83,23 +109,24 @@ app.get('/companyDepartment', authenticate.auth, function(req, res, next) {
 
 app.post('/companyDepartment/upsert', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    CompanyDepartment.find({}).exec(function(err, result){
-        if(result.length > 0){
-            console.log(result);
+    var body = req.body;
 
-        }
-    });
+    if(body['id'] == undefined || body['id'] == ''){
+        
+    }else{
+
+    }    
 });
 
 app.post('/companyDepartment/delete', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    CompanyDepartment.find({}, function(err, result){
-        if(result.length > 0){
-            console.log(result);
-        }
+    var body = req.body;
+    CompanyDepartment.remove({_id:body['id']}).exec(function(err, result){
+        res.send(result);
     });
 });
 
+//Dispatch Place
 app.get('/dispatchPlace', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var dispatchPlaces;
@@ -119,22 +146,24 @@ app.get('/dispatchPlace', authenticate.auth, function(req, res, next) {
 
 app.post('/dispatchPlace/upsert', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    DispatchPlace.find({}, function(err, result){
-        if(result.length > 0){
-            console.log(result);
-        }
-    });
+    var body = req.body;
+
+    if(body['id'] == undefined || body['id'] == ''){
+        
+    }else{
+
+    }    
 });
 
 app.post('/dispatchPlace/delete', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    DispatchPlace.find({}, function(err, result){
-        if(result.length > 0){
-            console.log(result);
-        }
+    var body = req.body;
+    DispatchPlace.remove({_id:body['id']}).exec(function(err, result){
+        res.send(result);
     });
 });
 
+//Employee Privacy
 app.get('/employeePrivacy', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var employeePrivacyInfos;
@@ -154,22 +183,30 @@ app.get('/employeePrivacy', authenticate.auth, function(req, res, next) {
 
 app.post('/employeePrivacy/upsert', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    EmployeePrivacy.find({}, function(err, result){
-        if(result.length > 0){
-            console.log(result);
+    var body = req.body;
+
+    EmployeePrivacy.update({mail:body['mail']}, {mail:body['mail'], name:body['name'], birtyday:body['birthday'], address:body['address'], phone_number:body['phone_number'], hiredate:body['hiredate']}, {upsert:true}).exec(function(err, result){
+        if(err){
+            
+        }else{
+            res.send(result);
         }
     });
 });
 
 app.post('/employeePrivacy/delete', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    EmployeePrivacy.find({}, function(err, result){
-        if(result.length > 0){
-            console.log(result);
+    var body = req.body;
+
+    EmployeePrivacy.remove({_id:ObjectId(body['id']), mail:body['mail']}).exec(function(err, result){
+        if(err){
+            
         }
+        res.send(result);
     });
 });
 
+//Employee Info
 app.get('/employeeInfo', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
     var companyDepartments, companyClasses, authorities, dispatchPlaces;
@@ -227,29 +264,41 @@ app.get('/employeeInfo', authenticate.auth, function(req, res, next) {
 
 app.post('/employeeInfo/upsert', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    var companyDepartments, companyClasses, authorities, dispatchPlaces;
-    var employeeInfos;
-    // console.log('Employee Info Upsert Post');
-    // console.log(req.body);
+
     var body = req.body;
-    EmployeeInfo.update({mail:body['mail']}, {mail:body['mail'], department:body['department_id'], class:body['class_id'], authority:body['authority_id'], dispatch:body['dispatch_id']}, {upsert:true}).exec(function(err, result){
-        if(err){
+    console.log(body['id']);
+    if(body['id'] == undefined || body['id'] == ''){
+        EmployeeInfo.update({mail:body['mail']}, {mail:body['mail'], department:body['department_id'], class:body['class_id'], authority:body['authority_id'], dispatch:body['dispatch_id']}, {upsert:true}).exec(function(err, result){
+            if(err){
             
-        }else{
-            res.send(result);
-        }
-    });
+            }else{
+                res.send(result);
+            }
+        });
+    }else{
+        EmployeeInfo.update({_id:mongoose.mongo.ObjectId(body['id'])}, {_id:mongoose.mongo.ObjectId(body['id']), mail:body['mail'], department:body['department_id'], class:body['class_id'], authority:body['authority_id'], dispatch:body['dispatch_id']}, {upsert:true}).exec(function(err, result){
+            if(err){
+            
+            }else{
+                res.send(result);
+            }
+        });
+    }    
 });
 
 app.post('/employeeInfo/delete', authenticate.auth, function(req, res, next) {
     var userName = req.user._json.preferred_username;
-    var companyDepartments, companyClasses, authorities, dispatchPlaces;
-    var employeeInfos;
-
-    var body = req.body;
+    var data = req.data;
+    console.log(data);
+    // EmployeeInfo.find({mail:userName}).populate('authority').exec(function(err, result){
+    //     if(result.length > 0){
+            
+    //     }
+    //     console.log(result);
+    // });
     
-    EmployeeInfo.remove({_id:ObjectId(body['id']), mail:body['mail']}).exec(function(err, result){
-        console.log(result);
+    EmployeeInfo.remove({_id:mongoose.mongo.ObjectId(body['id']), mail:body['mail']}).exec(function(err, result){
+        res.send(result);
     });
 });
 

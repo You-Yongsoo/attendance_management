@@ -1,4 +1,5 @@
 var express = require('express');
+var https = require('https');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -15,6 +16,7 @@ var OIDCStrategy = passport_azure_ad.OIDCStrategy;
 var employee_menu = require('./routes/employee/employee_menu');
 var attendance_management = require('./routes/attendance_management');
 var collection_management = require('./routes/collections/collection_management')
+var transport_management = require('./routes/transport_management');
 var collection_menu = require('./routes/collections/collection_menu');
 var db_helper = require('./routes/database/db_helper');
 var authenticate = require('./routes/auth/authenticate');
@@ -145,7 +147,8 @@ if (config.useMongoDBSessionStore) {
     })
   }));
 } else {
-  app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized: false }));
+  // app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized: false }));
+  app.use(expressSession({ secret: 'softwiz', resave: true, saveUninitialized: false }));
 }
 
 //セッションミドルウェア設定
@@ -166,6 +169,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -195,20 +200,11 @@ app.use('/employee_menu', employee_menu);
 app.use('/attendance_management', attendance_management);
 app.use('/collection_management', collection_management);
 app.use('/collection_menu', collection_menu);
+app.use('/transport_management', transport_management);
+
 app.get('/', authenticate.auth, function(req, res) {
   res.redirect('/employee_menu');
 });
-// app.get('/', 
-//   passport.authenticate('azuread-openidconnect', {
-//     response: res,                      // required
-//     resourceURL: config.resourceURL,    // optional. Provide a value if you want to specify the resource.
-//     customState: 'my_state',            // optional. Provide a value if you want to provide custom state value.
-//     failureRedirect: '/' 
-//   }),
-//   function(req, res){
-//      res.render('index', {title:'Express'});
-//   }
-// );
 
 app.get('/login',
   function(req, res, next) {
