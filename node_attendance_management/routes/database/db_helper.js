@@ -3,11 +3,14 @@ var mongoose = require('mongoose');
 var mongodb = require('mongodb');
 
 var db_server = 'localhost';
+//var db_server = "mongodb+srv://admin:admin@softwizcluster-wfoht.mongodb.net/test?retryWrites=true&w=majority";
 var db_name = 'db_attendance_management';
 
-var mongoose_attendance_management_url = 'mongodb://localhost/db_attendance_management';
+//var mongoose_attendance_management_url = 'mongodb://localhost/db_attendance_management';
+var mongoose_attendance_management_url = "mongodb+srv://admin:admin@softwizcluster-wfoht.mongodb.net/db_attendance_management";
 
-var mongodb_url = 'mongodb://localhost:27017';
+//var mongodb_url = 'mongodb://localhost:27017';
+var mongodb_url = "mongodb+srv://admin:admin@softwizcluster-wfoht.mongodb.net/db_attendance_management";
 var mongodb_dbname = 'db_attendance_management';
 var mongodb;
 

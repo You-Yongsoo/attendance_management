@@ -36,6 +36,14 @@ var config = require('./config/config');
 var config_filepath = "./config/config.json";
 var config_json = fs.readFileSync(config_filepath, 'utf-8');
 
+var ssl_server_key = "./config/server_key.pem";
+var ssl_server_crt = "./config/server_crt.pem";
+
+var ssl_server_options = {
+	key:fs.readFileSync(ssl_server_key),
+	cert:fs.readFileSync(ssl_server_crt)
+};
+
 passport.serializeUser(function(user, done){
   log.debug("SerializeUser");
   done(null, user.oid);
@@ -272,4 +280,10 @@ app.get('/logout', function(req, res){
 //   err.status = 404;
 //   next(err);
 // });
+
+//Set https server
+var ssl_server = https.createServer(ssl_server_options, app);
+ssl_server.listen(443);
+
 module.exports = app;
+
